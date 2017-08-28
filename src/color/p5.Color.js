@@ -74,6 +74,26 @@ p5.Color.prototype.setAlpha = function(new_alpha) {
   this._calculateLevels();
 };
 
+p5.Color.prototype.setHue = function(new_hue) {
+  // something
+  this._calculateLevels();
+};
+
+p5.Color.prototype.setSaturation = function(new_sat) {
+  // something
+  this._calculateLevels();
+};
+
+p5.Color.prototype.setBrightness = function(new_bright) {
+  // something
+  this._calculateLevels();
+};
+
+p5.Color.prototype.setLightness = function(new_light) {
+  // something
+  this._calculateLevels();
+};
+
 // calculates and stores the closest screen levels
 p5.Color.prototype._calculateLevels = function() {
   this.levels = this._array.map(function(level) {
