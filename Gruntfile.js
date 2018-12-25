@@ -419,6 +419,17 @@ module.exports = function(grunt) {
           './docs/reference/data.min.json': './docs/reference/data.json'
         }
       }
+    },
+    nyc: {
+      cover: {
+        cmd: false,
+        args: ['grunt']
+      },
+      report: {
+        options: {
+          reporter: 'text-summary'
+        }
+      }
     }
   };
 
@@ -469,6 +480,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-saucelabs');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-simple-nyc');
 
   // Create the multitasks.
   grunt.registerTask('build', ['browserify', 'browserify:min', 'uglify']);
