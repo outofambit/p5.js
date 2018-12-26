@@ -423,7 +423,12 @@ module.exports = function(grunt) {
     nyc: {
       cover: {
         cmd: false,
-        args: ['grunt']
+        args: ['grunt', 'test'],
+        options: {
+          all: true,
+          sourceMap: false,
+          instrument: false
+        }
       },
       report: {
         options: {
@@ -502,6 +507,12 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
   grunt.registerTask('test:nobuild', ['eslint:test', 'connect', 'mochaChrome']);
+  grunt.registerTask('test:coverage', [
+    'browserify',
+    'browserify:min',
+    'connect:server',
+    'mochaChrome:test'
+  ]);
   grunt.registerTask('yui', ['yuidoc:prod', 'clean:reference', 'minjson']);
   grunt.registerTask('yui:test', [
     'yuidoc:prod',

@@ -28,7 +28,9 @@ module.exports = function(grunt) {
 
       // Invoke Browserify programatically to bundle the code
       var browseified = browserify(srcFilePath, {
-        standalone: 'p5'
+        standalone: 'p5',
+        debug: true,
+        require: ['@babel/register']
       });
 
       if (isMin) {
