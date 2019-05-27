@@ -13,8 +13,22 @@
  */
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import {
+  LINE_STRIP,
+  IMAGE,
+  POINTS,
+  TEXTURE,
+  TRIANGLE_STRIP,
+  TRIANGLES,
+  LINES,
+  CLOSE,
+  FILL,
+  TRIANGLE_FAN,
+  LINE_LOOP,
+  QUADS,
+  QUAD_STRIP
+} from '../core/constants';
 
 /**
  * Begin shape drawing.  This is a helpful way of generating
@@ -32,8 +46,7 @@ var constants = require('../core/constants');
  */
 p5.RendererGL.prototype.beginShape = function(mode) {
   //default shape mode is line_strip
-  this.immediateMode.shapeMode =
-    mode !== undefined ? mode : constants.LINE_STRIP;
+  this.immediateMode.shapeMode = mode !== undefined ? mode : LINE_STRIP;
   //if we haven't yet initialized our
   //immediateMode vertices & buffers, create them now!
   if (this.immediateMode.vertices === undefined) {
@@ -102,7 +115,7 @@ p5.RendererGL.prototype.vertex = function(x, y) {
     vertexColor[3]
   );
 
-  if (this.textureMode === constants.IMAGE) {
+  if (this.textureMode === IMAGE) {
     if (this._tex !== null) {
       if (this._tex.width > 0 && this._tex.height > 0) {
         u /= this._tex.width;
@@ -142,27 +155,27 @@ p5.RendererGL.prototype.endShape = function(
   isContour,
   shapeKind
 ) {
-  if (this.immediateMode.shapeMode === constants.POINTS) {
+  if (this.immediateMode.shapeMode === POINTS) {
     this._drawPoints(
       this.immediateMode.vertices,
       this.immediateMode.pointVertexBuffer
     );
   } else if (this.immediateMode.vertices.length > 1) {
-    if (this._doStroke && this.drawMode !== constants.TEXTURE) {
-      if (this.immediateMode.shapeMode === constants.TRIANGLE_STRIP) {
+    if (this._doStroke && this.drawMode !== TEXTURE) {
+      if (this.immediateMode.shapeMode === TRIANGLE_STRIP) {
         var i;
         for (i = 0; i < this.immediateMode.vertices.length - 2; i++) {
           this.immediateMode.edges.push([i, i + 1]);
           this.immediateMode.edges.push([i, i + 2]);
         }
         this.immediateMode.edges.push([i, i + 1]);
-      } else if (this.immediateMode.shapeMode === constants.TRIANGLES) {
+      } else if (this.immediateMode.shapeMode === TRIANGLES) {
         for (i = 0; i < this.immediateMode.vertices.length - 2; i = i + 3) {
           this.immediateMode.edges.push([i, i + 1]);
           this.immediateMode.edges.push([i + 1, i + 2]);
           this.immediateMode.edges.push([i + 2, i]);
         }
-      } else if (this.immediateMode.shapeMode === constants.LINES) {
+      } else if (this.immediateMode.shapeMode === LINES) {
         for (i = 0; i < this.immediateMode.vertices.length - 1; i = i + 2) {
           this.immediateMode.edges.push([i, i + 1]);
         }
@@ -171,7 +184,7 @@ p5.RendererGL.prototype.endShape = function(
           this.immediateMode.edges.push([i, i + 1]);
         }
       }
-      if (mode === constants.CLOSE) {
+      if (mode === CLOSE) {
         this.immediateMode.edges.push([
           this.immediateMode.vertices.length - 1,
           0
@@ -182,7 +195,7 @@ p5.RendererGL.prototype.endShape = function(
       this._drawStrokeImmediateMode();
     }
 
-    if (this._doFill && this.immediateMode.shapeMode !== constants.LINES) {
+    if (this._doFill && this.immediateMode.shapeMode !== LINES) {
       if (this.isBezier || this.isQuadratic || this.isCurve) {
         var contours = [
           new Float32Array(this._vToNArray(this.immediateMode.vertices))
@@ -262,7 +275,7 @@ p5.RendererGL.prototype._drawFillImmediateMode = function(
   }
 
   // initialize the fill shader's 'aVertexColor' buffer
-  if (this.drawMode === constants.FILL && shader.attributes.aVertexColor) {
+  if (this.drawMode === FILL && shader.attributes.aVertexColor) {
     this._bindBuffer(
       this.immediateMode.colorBuffer,
       gl.ARRAY_BUFFER,
@@ -282,7 +295,7 @@ p5.RendererGL.prototype._drawFillImmediateMode = function(
   }
 
   // initialize the fill shader's 'aTexCoord' buffer
-  if (this.drawMode === constants.TEXTURE && shader.attributes.aTexCoord) {
+  if (this.drawMode === TEXTURE && shader.attributes.aTexCoord) {
     //texture coordinate Attribute
     this._bindBuffer(
       this.immediateMode.uvBuffer,
@@ -303,25 +316,25 @@ p5.RendererGL.prototype._drawFillImmediateMode = function(
   }
 
   //if (true || mode) {
-  if (this.drawMode === constants.FILL || this.drawMode === constants.TEXTURE) {
+  if (this.drawMode === FILL || this.drawMode === TEXTURE) {
     switch (this.immediateMode.shapeMode) {
-      case constants.LINE_STRIP:
-      case constants.LINES:
-      case constants.TRIANGLES:
+      case LINE_STRIP:
+      case LINES:
+      case TRIANGLES:
         this.immediateMode.shapeMode =
           this.isBezier ||
           this.isQuadratic ||
           this.isCurve ||
-          this.immediateMode.shapeMode === constants.TRIANGLES
-            ? constants.TRIANGLES
-            : constants.TRIANGLE_FAN;
+          this.immediateMode.shapeMode === TRIANGLES
+            ? TRIANGLES
+            : TRIANGLE_FAN;
         break;
     }
   } else {
     switch (this.immediateMode.shapeMode) {
-      case constants.LINE_STRIP:
-      case constants.LINES:
-        this.immediateMode.shapeMode = constants.LINE_LOOP;
+      case LINE_STRIP:
+      case LINES:
+        this.immediateMode.shapeMode = LINE_LOOP;
         break;
     }
   }
@@ -329,8 +342,8 @@ p5.RendererGL.prototype._drawFillImmediateMode = function(
   //QUADS & QUAD_STRIP are not supported primitives modes
   //in webgl.
   if (
-    this.immediateMode.shapeMode === constants.QUADS ||
-    this.immediateMode.shapeMode === constants.QUAD_STRIP
+    this.immediateMode.shapeMode === QUADS ||
+    this.immediateMode.shapeMode === QUAD_STRIP
   ) {
     throw new Error(
       'sorry, ' +
@@ -404,4 +417,4 @@ p5.RendererGL.prototype._drawStrokeImmediateMode = function() {
   shader.unbindShader();
 };
 
-module.exports = p5.RendererGL;
+export default p5.RendererGL;

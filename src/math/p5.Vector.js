@@ -6,8 +6,8 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { TWO_PI } from '../core/constants';
 
 /**
  * A class to describe a two or three dimensional vector, specifically
@@ -1521,7 +1521,7 @@ p5.Vector.fromAngles = function(theta, phi, length) {
  * </div>
  */
 p5.Vector.random2D = function random2D() {
-  return this.fromAngle(Math.random() * constants.TWO_PI);
+  return this.fromAngle(Math.random() * TWO_PI);
 };
 
 /**
@@ -1543,7 +1543,7 @@ p5.Vector.random2D = function random2D() {
  * </div>
  */
 p5.Vector.random3D = function random3D() {
-  var angle = Math.random() * constants.TWO_PI;
+  var angle = Math.random() * TWO_PI;
   var vz = Math.random() * 2 - 1;
   var vzBase = Math.sqrt(1 - vz * vz);
   var vx = vzBase * Math.cos(angle);
@@ -1748,4 +1748,4 @@ p5.Vector.mag = function mag(vecT) {
   return Math.sqrt(magSq);
 };
 
-module.exports = p5.Vector;
+export default p5.Vector;

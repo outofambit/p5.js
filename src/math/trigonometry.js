@@ -8,14 +8,14 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { RADIANS, RAD_TO_DEG, DEG_TO_RAD, DEGREES } from '../core/constants';
 
 /*
  * all DEGREES/RADIANS conversion should be done in the p5 instance
  * if possible, using the p5._toRadians(), p5._fromRadians() methods.
  */
-p5.prototype._angleMode = constants.RADIANS;
+p5.prototype._angleMode = RADIANS;
 
 /**
  * The inverse of <a href="#/p5/cos">cos()</a>, returns the arc cosine of a value. This function
@@ -265,7 +265,7 @@ p5.prototype.tan = function(angle) {
  *
  */
 p5.prototype.degrees = function(angle) {
-  return angle * constants.RAD_TO_DEG;
+  return angle * RAD_TO_DEG;
 };
 
 /**
@@ -290,7 +290,7 @@ p5.prototype.degrees = function(angle) {
  * </div>
  */
 p5.prototype.radians = function(angle) {
-  return angle * constants.DEG_TO_RAD;
+  return angle * DEG_TO_RAD;
 };
 
 /**
@@ -324,7 +324,7 @@ p5.prototype.radians = function(angle) {
  *
  */
 p5.prototype.angleMode = function(mode) {
-  if (mode === constants.DEGREES || mode === constants.RADIANS) {
+  if (mode === DEGREES || mode === RADIANS) {
     this._angleMode = mode;
   }
 };
@@ -338,8 +338,8 @@ p5.prototype.angleMode = function(mode) {
  * @returns {Number}
  */
 p5.prototype._toRadians = function(angle) {
-  if (this._angleMode === constants.DEGREES) {
-    return angle * constants.DEG_TO_RAD;
+  if (this._angleMode === DEGREES) {
+    return angle * DEG_TO_RAD;
   }
   return angle;
 };
@@ -353,8 +353,8 @@ p5.prototype._toRadians = function(angle) {
  * @returns {Number}
  */
 p5.prototype._toDegrees = function(angle) {
-  if (this._angleMode === constants.RADIANS) {
-    return angle * constants.RAD_TO_DEG;
+  if (this._angleMode === RADIANS) {
+    return angle * RAD_TO_DEG;
   }
   return angle;
 };
@@ -368,10 +368,10 @@ p5.prototype._toDegrees = function(angle) {
  * @returns {Number}
  */
 p5.prototype._fromRadians = function(angle) {
-  if (this._angleMode === constants.DEGREES) {
-    return angle * constants.RAD_TO_DEG;
+  if (this._angleMode === DEGREES) {
+    return angle * RAD_TO_DEG;
   }
   return angle;
 };
 
-module.exports = p5;
+export default p5;

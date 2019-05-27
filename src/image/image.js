@@ -11,12 +11,13 @@
  */
 'use strict';
 
-var p5 = require('../core/main');
+import p5 from '../core/main';
 // This is not global, but ESLint is not aware that
 // this module is implicitly enclosed with Browserify: this overrides the
 // redefined-global error and permits using the name "frames" for the array
 // of saved animation frames.
 
+// eslint-disable-next-line no-unused-vars
 /* global frames:true */ var frames = [];
 
 /**
@@ -303,4 +304,4 @@ p5.prototype._makeFrame = function(filename, extension, _cnv) {
   frames.push(thisFrame);
 };
 
-module.exports = p5;
+export default p5;

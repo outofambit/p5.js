@@ -8,8 +8,8 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { NEAREST, REPEAT, MIRROR } from '../core/constants';
 
 /**
  * Texture class for WEBGL Mode
@@ -258,13 +258,13 @@ p5.Texture.prototype.unbindTexture = function() {
 p5.Texture.prototype.setInterpolation = function(downScale, upScale) {
   var gl = this._renderer.GL;
 
-  if (downScale === constants.NEAREST) {
+  if (downScale === NEAREST) {
     this.glMinFilter = gl.NEAREST;
   } else {
     this.glMinFilter = gl.LINEAR;
   }
 
-  if (upScale === constants.NEAREST) {
+  if (upScale === NEAREST) {
     this.glMagFilter = gl.NEAREST;
   } else {
     this.glMagFilter = gl.LINEAR;
@@ -298,7 +298,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
   var widthPowerOfTwo = isPowerOfTwo(this.width);
   var heightPowerOfTwo = isPowerOfTwo(this.height);
 
-  if (wrapX === constants.REPEAT) {
+  if (wrapX === REPEAT) {
     if (widthPowerOfTwo && heightPowerOfTwo) {
       this.glWrapS = gl.REPEAT;
     } else {
@@ -307,7 +307,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       );
       this.glWrapS = gl.CLAMP_TO_EDGE;
     }
-  } else if (wrapX === constants.MIRROR) {
+  } else if (wrapX === MIRROR) {
     if (widthPowerOfTwo && heightPowerOfTwo) {
       this.glWrapS = gl.MIRRORED_REPEAT;
     } else {
@@ -321,7 +321,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
     this.glWrapS = gl.CLAMP_TO_EDGE;
   }
 
-  if (wrapY === constants.REPEAT) {
+  if (wrapY === REPEAT) {
     if (widthPowerOfTwo && heightPowerOfTwo) {
       this.glWrapT = gl.REPEAT;
     } else {
@@ -330,7 +330,7 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
       );
       this.glWrapT = gl.CLAMP_TO_EDGE;
     }
-  } else if (wrapY === constants.MIRROR) {
+  } else if (wrapY === MIRROR) {
     if (widthPowerOfTwo && heightPowerOfTwo) {
       this.glWrapT = gl.MIRRORED_REPEAT;
     } else {
@@ -350,4 +350,4 @@ p5.Texture.prototype.setWrapMode = function(wrapX, wrapY) {
   this.unbindTexture();
 };
 
-module.exports = p5.Texture;
+export default p5.Texture;

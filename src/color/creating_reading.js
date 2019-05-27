@@ -8,10 +8,10 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-require('./p5.Color');
-require('../core/error_helpers');
+import p5 from '../core/main';
+import { RGB, HSB, HSL } from '../core/constants';
+import './p5.Color';
+require('../core/error_helpers').default;
 
 /**
  * Extracts the alpha value from a color or pixel array.
@@ -447,19 +447,19 @@ p5.prototype.lerpColor = function(c1, c2, amt) {
   var l0, l1, l2, l3;
   var fromArray, toArray;
 
-  if (mode === constants.RGB) {
+  if (mode === RGB) {
     fromArray = c1.levels.map(function(level) {
       return level / 255;
     });
     toArray = c2.levels.map(function(level) {
       return level / 255;
     });
-  } else if (mode === constants.HSB) {
+  } else if (mode === HSB) {
     c1._getBrightness(); // Cache hsba so it definitely exists.
     c2._getBrightness();
     fromArray = c1.hsba;
     toArray = c2.hsba;
-  } else if (mode === constants.HSL) {
+  } else if (mode === HSL) {
     c1._getLightness(); // Cache hsla so it definitely exists.
     c2._getLightness();
     fromArray = c1.hsla;
@@ -600,4 +600,4 @@ p5.prototype.saturation = function(c) {
   return this.color(c)._getSaturation();
 };
 
-module.exports = p5;
+export default p5;

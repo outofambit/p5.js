@@ -7,8 +7,8 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { GRID, AXES } from '../core/constants';
 
 /**
  * Allows movement around a 3D sketch using a mouse or trackpad.  Left-clicking
@@ -329,7 +329,7 @@ p5.prototype.debugMode = function() {
   }
 
   // then add new debugMode functions according to the argument list
-  if (arguments[0] === constants.GRID) {
+  if (arguments[0] === GRID) {
     this.registerMethod(
       'post',
       this._grid.call(
@@ -341,7 +341,7 @@ p5.prototype.debugMode = function() {
         arguments[5]
       )
     );
-  } else if (arguments[0] === constants.AXES) {
+  } else if (arguments[0] === AXES) {
     this.registerMethod(
       'post',
       this._axesIcon.call(
@@ -566,4 +566,4 @@ p5.prototype._axesIcon = function(size, xOff, yOff, zOff) {
   };
 };
 
-module.exports = p5;
+export default p5;

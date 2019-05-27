@@ -7,10 +7,10 @@
 
 'use strict';
 
-require('./shim');
+import './shim';
 
 // Core needs the PVariables object
-var constants = require('./constants');
+import constants, { RGB } from './constants';
 
 /**
  * This is the p5 instance constructor.
@@ -567,7 +567,7 @@ p5.prototype._initializeInstanceVariables = function() {
   this._bezierDetail = 20;
   this._curveDetail = 20;
 
-  this._colorMode = constants.RGB;
+  this._colorMode = RGB;
   this._colorMaxes = {
     rgb: [255, 255, 255, 255],
     hsb: [360, 100, 100, 1],
@@ -722,4 +722,4 @@ p5.prototype._createFriendlyGlobalFunctionBinder = function(options) {
   };
 };
 
-module.exports = p5;
+export default p5;

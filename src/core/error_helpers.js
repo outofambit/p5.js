@@ -5,8 +5,8 @@
 
 'use strict';
 
-var p5 = require('./main');
-var constants = require('./constants');
+import p5 from './main';
+import constants, { CLOSE, hasOwnProperty } from './constants';
 
 // p5.js blue, p5.js orange, auto dark green; fallback p5.js darkened magenta
 // See testColors below for all the color codes and names
@@ -282,7 +282,7 @@ if (typeof IS_MINIFIED !== 'undefined') {
 
               var myArray = myRe.exec(format.description);
               if (func === 'endShape' && format.name === 'mode') {
-                values[constants.CLOSE] = true;
+                values[CLOSE] = true;
                 names.push('CLOSE');
               } else {
                 var match = myArray[0];
@@ -290,7 +290,7 @@ if (typeof IS_MINIFIED !== 'undefined') {
                 var matchConst;
                 while ((matchConst = reConst.exec(match)) !== null) {
                   var name = matchConst[0];
-                  if (constants.hasOwnProperty(name)) {
+                  if (hasOwnProperty(name)) {
                     values[constants[name]] = true;
                     names.push(name);
                   }
@@ -792,4 +792,4 @@ if (document.readyState !== 'complete') {
   });
 }
 
-module.exports = p5;
+export default p5;

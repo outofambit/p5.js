@@ -6,8 +6,8 @@
 
 'use strict';
 
-var p5 = require('./main');
-var constants = require('./constants');
+import p5 from './main';
+import { P2D, WEBGL } from './constants';
 
 /**
  * Thin wrapper around a renderer, to be used for creating a
@@ -24,7 +24,7 @@ var constants = require('./constants');
  * @param {p5} [pInst]          pointer to p5 instance
  */
 p5.Graphics = function(w, h, renderer, pInst) {
-  var r = renderer || constants.P2D;
+  var r = renderer || P2D;
 
   this.canvas = document.createElement('canvas');
   var node = pInst._userNode || document.body;
@@ -48,7 +48,7 @@ p5.Graphics = function(w, h, renderer, pInst) {
   this.height = h;
   this._pixelDensity = pInst._pixelDensity;
 
-  if (r === constants.WEBGL) {
+  if (r === WEBGL) {
     this._renderer = new p5.RendererGL(this.canvas, this, false);
   } else {
     this._renderer = new p5.Renderer2D(this.canvas, this, false);
@@ -182,4 +182,4 @@ p5.Graphics.prototype.remove = function() {
   }
 };
 
-module.exports = p5.Graphics;
+export default p5.Graphics;

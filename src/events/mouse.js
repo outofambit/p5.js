@@ -8,8 +8,8 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { CENTER, RIGHT, LEFT } from '../core/constants';
 
 /*
  * This is a flag which is false until the first time
@@ -417,11 +417,11 @@ function getMousePos(canvas, w, h, evt) {
 
 p5.prototype._setMouseButton = function(e) {
   if (e.button === 1) {
-    this._setProperty('mouseButton', constants.CENTER);
+    this._setProperty('mouseButton', CENTER);
   } else if (e.button === 2) {
-    this._setProperty('mouseButton', constants.RIGHT);
+    this._setProperty('mouseButton', RIGHT);
   } else {
-    this._setProperty('mouseButton', constants.LEFT);
+    this._setProperty('mouseButton', LEFT);
   }
 };
 
@@ -925,4 +925,4 @@ p5.prototype._onwheel = function(e) {
   }
 };
 
-module.exports = p5;
+export default p5;

@@ -6,11 +6,11 @@
 
 'use strict';
 
-var p5 = require('./main');
-var constants = require('./constants');
-require('./p5.Graphics');
-require('./p5.Renderer2D');
-require('../webgl/p5.RendererGL');
+import p5 from './main';
+import { P2D, WEBGL, NORMAL, BLEND } from './constants';
+require('./p5.Graphics').default;
+require('./p5.Renderer2D').default;
+require('../webgl/p5.RendererGL').default;
 var defaultId = 'defaultCanvas0'; // this gets set again in createCanvas
 var defaultClass = 'p5Canvas';
 
@@ -53,10 +53,10 @@ var defaultClass = 'p5Canvas';
 p5.prototype.createCanvas = function(w, h, renderer) {
   p5._validateParameters('createCanvas', arguments);
   //optional: renderer, otherwise defaults to p2d
-  var r = renderer || constants.P2D;
+  var r = renderer || P2D;
   var c;
 
-  if (r === constants.WEBGL) {
+  if (r === WEBGL) {
     c = document.getElementById(defaultId);
     if (c) {
       //if defaultCanvas already exists
@@ -100,7 +100,7 @@ p5.prototype.createCanvas = function(w, h, renderer) {
 
   // Init our graphics renderer
   //webgl mode
-  if (r === constants.WEBGL) {
+  if (r === WEBGL) {
     this._setProperty('_renderer', new p5.RendererGL(c, this, true));
     this._elements.push(this._renderer);
   } else {
@@ -305,14 +305,14 @@ p5.prototype.createGraphics = function(w, h, renderer) {
  */
 p5.prototype.blendMode = function(mode) {
   p5._validateParameters('blendMode', arguments);
-  if (mode === constants.NORMAL) {
+  if (mode === NORMAL) {
     // Warning added 3/26/19, can be deleted in future (1.0 release?)
     console.warn(
       'NORMAL has been deprecated for use in blendMode. defaulting to BLEND instead.'
     );
-    mode = constants.BLEND;
+    mode = BLEND;
   }
   this._renderer.blendMode(mode);
 };
 
-module.exports = p5;
+export default p5;

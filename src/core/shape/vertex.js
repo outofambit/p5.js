@@ -8,8 +8,18 @@
 
 'use strict';
 
-var p5 = require('../main');
-var constants = require('../constants');
+import p5 from '../main';
+import {
+  POINTS,
+  LINES,
+  TRIANGLES,
+  TRIANGLE_FAN,
+  TRIANGLE_STRIP,
+  QUADS,
+  QUAD_STRIP,
+  CLOSE,
+  QUADRATIC
+} from '../constants';
 var shapeKind = null;
 var vertices = [];
 var contourVertices = [];
@@ -248,13 +258,13 @@ p5.prototype.beginShape = function(kind) {
     this._renderer.beginShape.apply(this._renderer, arguments);
   } else {
     if (
-      kind === constants.POINTS ||
-      kind === constants.LINES ||
-      kind === constants.TRIANGLES ||
-      kind === constants.TRIANGLE_FAN ||
-      kind === constants.TRIANGLE_STRIP ||
-      kind === constants.QUADS ||
-      kind === constants.QUAD_STRIP
+      kind === POINTS ||
+      kind === LINES ||
+      kind === TRIANGLES ||
+      kind === TRIANGLE_FAN ||
+      kind === TRIANGLE_STRIP ||
+      kind === QUADS ||
+      kind === QUAD_STRIP
     ) {
       shapeKind = kind;
     } else {
@@ -617,7 +627,7 @@ p5.prototype.endShape = function(mode) {
       return this;
     }
 
-    var closeShape = mode === constants.CLOSE;
+    var closeShape = mode === CLOSE;
 
     // if the shape is closed, the first element is also the last element
     if (closeShape && !isContour) {
@@ -783,7 +793,7 @@ p5.prototype.quadraticVertex = function() {
       pt.y = arguments[1];
       pt.x3 = arguments[2];
       pt.y3 = arguments[3];
-      pt.type = constants.QUADRATIC;
+      pt.type = QUADRATIC;
       this._contourVertices.push(pt);
 
       return this;
@@ -935,4 +945,4 @@ p5.prototype.vertex = function(x, y, moveTo, u, v) {
   return this;
 };
 
-module.exports = p5;
+export default p5;

@@ -1,43 +1,58 @@
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-var libtess = require('libtess');
-require('./p5.Shader');
-require('./p5.Camera');
-require('../core/p5.Renderer');
-require('./p5.Matrix');
-var fs = require('fs');
+import p5 from '../core/main';
+import {
+  BLEND,
+  IMAGE,
+  CLAMP,
+  FILL,
+  DARKEST,
+  LIGHTEST,
+  ADD,
+  SUBTRACT,
+  SCREEN,
+  EXCLUSION,
+  REPLACE,
+  MULTIPLY,
+  BURN,
+  OVERLAY,
+  HARD_LIGHT,
+  SOFT_LIGHT,
+  DODGE
+} from '../core/constants';
+import { primitiveType, GluTesselator, gluEnum } from 'libtess';
+require('./p5.Shader').default;
+require('./p5.Camera').default;
+require('../core/p5.Renderer').default;
+require('./p5.Matrix').default;
+import { readFileSync } from 'fs';
 
 var defaultShaders = {
-  immediateVert: fs.readFileSync(
-    __dirname + '/shaders/immediate.vert',
-    'utf-8'
-  ),
-  vertexColorVert: fs.readFileSync(
+  immediateVert: readFileSync(__dirname + '/shaders/immediate.vert', 'utf-8'),
+  vertexColorVert: readFileSync(
     __dirname + '/shaders/vertexColor.vert',
     'utf-8'
   ),
-  vertexColorFrag: fs.readFileSync(
+  vertexColorFrag: readFileSync(
     __dirname + '/shaders/vertexColor.frag',
     'utf-8'
   ),
-  normalVert: fs.readFileSync(__dirname + '/shaders/normal.vert', 'utf-8'),
-  normalFrag: fs.readFileSync(__dirname + '/shaders/normal.frag', 'utf-8'),
-  basicFrag: fs.readFileSync(__dirname + '/shaders/basic.frag', 'utf-8'),
-  lightVert: fs.readFileSync(__dirname + '/shaders/light.vert', 'utf-8'),
-  lightTextureFrag: fs.readFileSync(
+  normalVert: readFileSync(__dirname + '/shaders/normal.vert', 'utf-8'),
+  normalFrag: readFileSync(__dirname + '/shaders/normal.frag', 'utf-8'),
+  basicFrag: readFileSync(__dirname + '/shaders/basic.frag', 'utf-8'),
+  lightVert: readFileSync(__dirname + '/shaders/light.vert', 'utf-8'),
+  lightTextureFrag: readFileSync(
     __dirname + '/shaders/light_texture.frag',
     'utf-8'
   ),
-  phongVert: fs.readFileSync(__dirname + '/shaders/phong.vert', 'utf-8'),
-  phongFrag: fs.readFileSync(__dirname + '/shaders/phong.frag', 'utf-8'),
-  fontVert: fs.readFileSync(__dirname + '/shaders/font.vert', 'utf-8'),
-  fontFrag: fs.readFileSync(__dirname + '/shaders/font.frag', 'utf-8'),
-  lineVert: fs.readFileSync(__dirname + '/shaders/line.vert', 'utf-8'),
-  lineFrag: fs.readFileSync(__dirname + '/shaders/line.frag', 'utf-8'),
-  pointVert: fs.readFileSync(__dirname + '/shaders/point.vert', 'utf-8'),
-  pointFrag: fs.readFileSync(__dirname + '/shaders/point.frag', 'utf-8')
+  phongVert: readFileSync(__dirname + '/shaders/phong.vert', 'utf-8'),
+  phongFrag: readFileSync(__dirname + '/shaders/phong.frag', 'utf-8'),
+  fontVert: readFileSync(__dirname + '/shaders/font.vert', 'utf-8'),
+  fontFrag: readFileSync(__dirname + '/shaders/font.frag', 'utf-8'),
+  lineVert: readFileSync(__dirname + '/shaders/line.vert', 'utf-8'),
+  lineFrag: readFileSync(__dirname + '/shaders/line.frag', 'utf-8'),
+  pointVert: readFileSync(__dirname + '/shaders/point.vert', 'utf-8'),
+  pointFrag: readFileSync(__dirname + '/shaders/point.frag', 'utf-8')
 };
 
 /**
@@ -70,7 +85,7 @@ p5.RendererGL = function(elt, pInst, isMainCanvas, attr) {
 
   this.curFillColor = [1, 1, 1, 1];
   this.curStrokeColor = [0, 0, 0, 1];
-  this.curBlendMode = constants.BLEND;
+  this.curBlendMode = BLEND;
   this.blendExt = this.GL.getExtension('EXT_blend_minmax');
 
   this._useSpecularMaterial = false;
@@ -116,10 +131,10 @@ p5.RendererGL = function(elt, pInst, isMainCanvas, attr) {
   // array of textures created in this gl context via this.getTexture(src)
   this.textures = [];
 
-  this.textureMode = constants.IMAGE;
+  this.textureMode = IMAGE;
   // default wrap settings
-  this.textureWrapX = constants.CLAMP;
-  this.textureWrapY = constants.CLAMP;
+  this.textureWrapX = CLAMP;
+  this.textureWrapY = CLAMP;
   this._tex = null;
   this._curveTightness = 6;
 
@@ -508,7 +523,7 @@ p5.RendererGL.prototype.fill = function(v1, v2, v3, a) {
   //see material.js for more info on color blending in webgl
   var color = p5.prototype.color.apply(this._pInst, arguments);
   this.curFillColor = color._array;
-  this.drawMode = constants.FILL;
+  this.drawMode = FILL;
   this._useNormalMaterial = false;
   this._tex = null;
 };
@@ -559,23 +574,23 @@ p5.RendererGL.prototype.strokeCap = function(cap) {
 
 p5.RendererGL.prototype.blendMode = function(mode) {
   if (
-    mode === constants.DARKEST ||
-    mode === constants.LIGHTEST ||
-    mode === constants.ADD ||
-    mode === constants.BLEND ||
-    mode === constants.SUBTRACT ||
-    mode === constants.SCREEN ||
-    mode === constants.EXCLUSION ||
-    mode === constants.REPLACE ||
-    mode === constants.MULTIPLY
+    mode === DARKEST ||
+    mode === LIGHTEST ||
+    mode === ADD ||
+    mode === BLEND ||
+    mode === SUBTRACT ||
+    mode === SCREEN ||
+    mode === EXCLUSION ||
+    mode === REPLACE ||
+    mode === MULTIPLY
   )
     this.curBlendMode = mode;
   else if (
-    mode === constants.BURN ||
-    mode === constants.OVERLAY ||
-    mode === constants.HARD_LIGHT ||
-    mode === constants.SOFT_LIGHT ||
-    mode === constants.DODGE
+    mode === BURN ||
+    mode === OVERLAY ||
+    mode === HARD_LIGHT ||
+    mode === SOFT_LIGHT ||
+    mode === DODGE
   ) {
     console.warn(
       'BURN, OVERLAY, HARD_LIGHT, SOFT_LIGHT, and DODGE only work for blendMode in 2D mode.'
@@ -1213,7 +1228,7 @@ p5.RendererGL.prototype._initTessy = function initTesselator() {
   }
 
   function begincallback(type) {
-    if (type !== libtess.primitiveType.GL_TRIANGLES) {
+    if (type !== primitiveType.GL_TRIANGLES) {
       console.log('expected TRIANGLES but got type: ' + type);
     }
   }
@@ -1231,12 +1246,12 @@ p5.RendererGL.prototype._initTessy = function initTesselator() {
     // don't really care about the flag, but need no-strip/no-fan behavior
   }
 
-  var tessy = new libtess.GluTesselator();
-  tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_VERTEX_DATA, vertexCallback);
-  tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_BEGIN, begincallback);
-  tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_ERROR, errorcallback);
-  tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_COMBINE, combinecallback);
-  tessy.gluTessCallback(libtess.gluEnum.GLU_TESS_EDGE_FLAG, edgeCallback);
+  var tessy = new GluTesselator();
+  tessy.gluTessCallback(gluEnum.GLU_TESS_VERTEX_DATA, vertexCallback);
+  tessy.gluTessCallback(gluEnum.GLU_TESS_BEGIN, begincallback);
+  tessy.gluTessCallback(gluEnum.GLU_TESS_ERROR, errorcallback);
+  tessy.gluTessCallback(gluEnum.GLU_TESS_COMBINE, combinecallback);
+  tessy.gluTessCallback(gluEnum.GLU_TESS_EDGE_FLAG, edgeCallback);
 
   return tessy;
 };
@@ -1295,4 +1310,4 @@ p5.RendererGL.prototype._bezierToCatmull = function(w) {
   return p;
 };
 
-module.exports = p5.RendererGL;
+export default p5.RendererGL;

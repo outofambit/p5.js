@@ -1,9 +1,9 @@
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-require('./p5.Shader');
-require('./p5.RendererGL');
+import p5 from '../core/main';
+import { TEXTURE } from '../core/constants';
+require('./p5.Shader').default;
+require('./p5.RendererGL').default;
 
 // Text/Typography
 // @TODO:
@@ -629,7 +629,7 @@ p5.RendererGL.prototype._renderText = function(p, line, x, y, maxY) {
   var drawMode = this.drawMode;
 
   this._doStroke = false;
-  this.drawMode = constants.TEXTURE;
+  this.drawMode = TEXTURE;
 
   // get the cached FontInfo object
   var font = this._textFont.font;

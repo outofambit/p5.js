@@ -1,10 +1,51 @@
 'use strict';
 
-var p5 = require('./main');
-var constants = require('./constants');
-var filters = require('../image/filters');
+import p5 from './main';
+import {
+  _DEFAULT_FILL,
+  _DEFAULT_STROKE,
+  ROUND,
+  SUBTRACT,
+  BLEND,
+  DARKEST,
+  LIGHTEST,
+  DIFFERENCE,
+  MULTIPLY,
+  EXCLUSION,
+  SCREEN,
+  REPLACE,
+  OVERLAY,
+  HARD_LIGHT,
+  SOFT_LIGHT,
+  DODGE,
+  BURN,
+  ADD,
+  HALF_PI,
+  PIE,
+  CHORD,
+  TWO_PI,
+  CLOSE,
+  POLYGON,
+  POINTS,
+  LINES,
+  TRIANGLES,
+  TRIANGLE_STRIP,
+  TRIANGLE_FAN,
+  QUADS,
+  QUAD_STRIP,
+  SQUARE,
+  PROJECT,
+  BEVEL,
+  MITER,
+  BASELINE,
+  TOP,
+  _DEFAULT_TEXT_FILL,
+  CENTER,
+  _CTX_MIDDLE
+} from './constants';
+import { _toPixels } from '../image/filters';
 
-require('./p5.Renderer');
+import './p5.Renderer';
 
 /**
  * p5.Renderer2D
@@ -25,9 +66,9 @@ p5.Renderer2D.prototype = Object.create(p5.Renderer.prototype);
 
 p5.Renderer2D.prototype._applyDefaults = function() {
   this._cachedFillStyle = this._cachedStrokeStyle = undefined;
-  this._setFill(constants._DEFAULT_FILL);
-  this._setStroke(constants._DEFAULT_STROKE);
-  this.drawingContext.lineCap = constants.ROUND;
+  this._setFill(_DEFAULT_FILL);
+  this._setStroke(_DEFAULT_STROKE);
+  this.drawingContext.lineCap = ROUND;
   this.drawingContext.font = 'normal 12px sans-serif';
 };
 
@@ -139,7 +180,7 @@ p5.Renderer2D.prototype._getTintedImageCanvas = function(img) {
   if (!img.canvas) {
     return img;
   }
-  var pixels = filters._toPixels(img.canvas);
+  var pixels = _toPixels(img.canvas);
   var tmpCanvas = document.createElement('canvas');
   tmpCanvas.width = img.canvas.width;
   tmpCanvas.height = img.canvas.height;
@@ -165,23 +206,23 @@ p5.Renderer2D.prototype._getTintedImageCanvas = function(img) {
 //////////////////////////////////////////////
 
 p5.Renderer2D.prototype.blendMode = function(mode) {
-  if (mode === constants.SUBTRACT) {
+  if (mode === SUBTRACT) {
     console.warn('blendMode(SUBTRACT) only works in WEBGL mode.');
   } else if (
-    mode === constants.BLEND ||
-    mode === constants.DARKEST ||
-    mode === constants.LIGHTEST ||
-    mode === constants.DIFFERENCE ||
-    mode === constants.MULTIPLY ||
-    mode === constants.EXCLUSION ||
-    mode === constants.SCREEN ||
-    mode === constants.REPLACE ||
-    mode === constants.OVERLAY ||
-    mode === constants.HARD_LIGHT ||
-    mode === constants.SOFT_LIGHT ||
-    mode === constants.DODGE ||
-    mode === constants.BURN ||
-    mode === constants.ADD
+    mode === BLEND ||
+    mode === DARKEST ||
+    mode === LIGHTEST ||
+    mode === DIFFERENCE ||
+    mode === MULTIPLY ||
+    mode === EXCLUSION ||
+    mode === SCREEN ||
+    mode === REPLACE ||
+    mode === OVERLAY ||
+    mode === HARD_LIGHT ||
+    mode === SOFT_LIGHT ||
+    mode === DODGE ||
+    mode === BURN ||
+    mode === ADD
   ) {
     this.drawingContext.globalCompositeOperation = mode;
   } else {
@@ -459,7 +500,7 @@ p5.Renderer2D.prototype.arc = function(x, y, w, h, start, stop, mode) {
 
   // Create curves
   while (stop - start >= epsilon) {
-    arcToDraw = Math.min(stop - start, constants.HALF_PI);
+    arcToDraw = Math.min(stop - start, HALF_PI);
     curves.push(this._acuteArcToBezier(start, arcToDraw));
     start += arcToDraw;
   }
@@ -476,7 +517,7 @@ p5.Renderer2D.prototype.arc = function(x, y, w, h, start, stop, mode) {
                           x + curve.cx * rx, y + curve.cy * ry,
                           x + curve.dx * rx, y + curve.dy * ry);
     });
-    if (mode === constants.PIE || mode == null) {
+    if (mode === PIE || mode == null) {
       ctx.lineTo(x, y);
     }
     ctx.closePath();
@@ -496,10 +537,10 @@ p5.Renderer2D.prototype.arc = function(x, y, w, h, start, stop, mode) {
                           x + curve.cx * rx, y + curve.cy * ry,
                           x + curve.dx * rx, y + curve.dy * ry);
     });
-    if (mode === constants.PIE) {
+    if (mode === PIE) {
       ctx.lineTo(x, y);
       ctx.closePath();
-    } else if (mode === constants.CHORD) {
+    } else if (mode === CHORD) {
       ctx.closePath();
     }
     ctx.stroke();
@@ -579,7 +620,7 @@ p5.Renderer2D.prototype.point = function(x, y) {
   this._setFill(s);
   if (ctx.lineWidth > 1) {
     ctx.beginPath();
-    ctx.arc(x, y, ctx.lineWidth / 2, 0, constants.TWO_PI, false);
+    ctx.arc(x, y, ctx.lineWidth / 2, 0, TWO_PI, false);
     ctx.fill();
   } else {
     ctx.fillRect(x, y, 1, 1);
@@ -753,14 +794,14 @@ p5.Renderer2D.prototype.endShape = function(
   if (!this._doStroke && !this._doFill) {
     return this;
   }
-  var closeShape = mode === constants.CLOSE;
+  var closeShape = mode === CLOSE;
   var v;
   if (closeShape && !isContour) {
     vertices.push(vertices[0]);
   }
   var i, j;
   var numVerts = vertices.length;
-  if (isCurve && (shapeKind === constants.POLYGON || shapeKind === null)) {
+  if (isCurve && (shapeKind === POLYGON || shapeKind === null)) {
     if (numVerts > 3) {
       var b = [],
         s = 1 - this._curveTightness;
@@ -793,10 +834,7 @@ p5.Renderer2D.prototype.endShape = function(
       }
       this._doFillStrokeClose(closeShape);
     }
-  } else if (
-    isBezier &&
-    (shapeKind === constants.POLYGON || shapeKind === null)
-  ) {
+  } else if (isBezier && (shapeKind === POLYGON || shapeKind === null)) {
     this.drawingContext.beginPath();
     for (i = 0; i < numVerts; i++) {
       if (vertices[i].isVert) {
@@ -817,10 +855,7 @@ p5.Renderer2D.prototype.endShape = function(
       }
     }
     this._doFillStrokeClose(closeShape);
-  } else if (
-    isQuadratic &&
-    (shapeKind === constants.POLYGON || shapeKind === null)
-  ) {
+  } else if (isQuadratic && (shapeKind === POLYGON || shapeKind === null)) {
     this.drawingContext.beginPath();
     for (i = 0; i < numVerts; i++) {
       if (vertices[i].isVert) {
@@ -840,7 +875,7 @@ p5.Renderer2D.prototype.endShape = function(
     }
     this._doFillStrokeClose(closeShape);
   } else {
-    if (shapeKind === constants.POINTS) {
+    if (shapeKind === POINTS) {
       for (i = 0; i < numVerts; i++) {
         v = vertices[i];
         if (this._doStroke) {
@@ -848,7 +883,7 @@ p5.Renderer2D.prototype.endShape = function(
         }
         this._pInst.point(v[0], v[1]);
       }
-    } else if (shapeKind === constants.LINES) {
+    } else if (shapeKind === LINES) {
       for (i = 0; i + 1 < numVerts; i += 2) {
         v = vertices[i];
         if (this._doStroke) {
@@ -856,7 +891,7 @@ p5.Renderer2D.prototype.endShape = function(
         }
         this._pInst.line(v[0], v[1], vertices[i + 1][0], vertices[i + 1][1]);
       }
-    } else if (shapeKind === constants.TRIANGLES) {
+    } else if (shapeKind === TRIANGLES) {
       for (i = 0; i + 2 < numVerts; i += 3) {
         v = vertices[i];
         this.drawingContext.beginPath();
@@ -873,7 +908,7 @@ p5.Renderer2D.prototype.endShape = function(
           this.drawingContext.stroke();
         }
       }
-    } else if (shapeKind === constants.TRIANGLE_STRIP) {
+    } else if (shapeKind === TRIANGLE_STRIP) {
       for (i = 0; i + 1 < numVerts; i++) {
         v = vertices[i];
         this.drawingContext.beginPath();
@@ -896,7 +931,7 @@ p5.Renderer2D.prototype.endShape = function(
         }
         this._doFillStrokeClose(closeShape);
       }
-    } else if (shapeKind === constants.TRIANGLE_FAN) {
+    } else if (shapeKind === TRIANGLE_FAN) {
       if (numVerts > 2) {
         // For performance reasons, try to batch as many of the
         // fill and stroke calls as possible.
@@ -930,7 +965,7 @@ p5.Renderer2D.prototype.endShape = function(
         }
         this._doFillStrokeClose(closeShape);
       }
-    } else if (shapeKind === constants.QUADS) {
+    } else if (shapeKind === QUADS) {
       for (i = 0; i + 3 < numVerts; i += 4) {
         v = vertices[i];
         this.drawingContext.beginPath();
@@ -947,7 +982,7 @@ p5.Renderer2D.prototype.endShape = function(
         }
         this._doFillStrokeClose(closeShape);
       }
-    } else if (shapeKind === constants.QUAD_STRIP) {
+    } else if (shapeKind === QUAD_STRIP) {
       if (numVerts > 3) {
         for (i = 0; i + 1 < numVerts; i += 2) {
           v = vertices[i];
@@ -1002,22 +1037,14 @@ p5.Renderer2D.prototype.endShape = function(
 //////////////////////////////////////////////
 
 p5.Renderer2D.prototype.strokeCap = function(cap) {
-  if (
-    cap === constants.ROUND ||
-    cap === constants.SQUARE ||
-    cap === constants.PROJECT
-  ) {
+  if (cap === ROUND || cap === SQUARE || cap === PROJECT) {
     this.drawingContext.lineCap = cap;
   }
   return this;
 };
 
 p5.Renderer2D.prototype.strokeJoin = function(join) {
-  if (
-    join === constants.ROUND ||
-    join === constants.BEVEL ||
-    join === constants.MITER
-  ) {
+  if (join === ROUND || join === BEVEL || join === MITER) {
     this.drawingContext.lineJoin = join;
   }
   return this;
@@ -1149,16 +1176,16 @@ p5.Renderer2D.prototype.text = function(str, x, y, maxWidth, maxHeight) {
   // of BASELINE vertical alignment in a bounding box
 
   if (typeof maxWidth !== 'undefined' && typeof maxHeight !== 'undefined') {
-    if (this.drawingContext.textBaseline === constants.BASELINE) {
+    if (this.drawingContext.textBaseline === BASELINE) {
       baselineHacked = true;
-      this.drawingContext.textBaseline = constants.TOP;
+      this.drawingContext.textBaseline = TOP;
     }
   }
 
   var p = p5.Renderer.prototype.text.apply(this, arguments);
 
   if (baselineHacked) {
-    this.drawingContext.textBaseline = constants.BASELINE;
+    this.drawingContext.textBaseline = BASELINE;
   }
 
   return p;
@@ -1182,7 +1209,7 @@ p5.Renderer2D.prototype._renderText = function(p, line, x, y, maxY) {
     if (this._doFill) {
       // if fill hasn't been set by user, use default text fill
       if (!this._fillSet) {
-        this._setFill(constants._DEFAULT_TEXT_FILL);
+        this._setFill(_DEFAULT_TEXT_FILL);
       }
 
       this.drawingContext.fillText(line, x, y);
@@ -1229,8 +1256,8 @@ p5.Renderer2D.prototype._applyTextProperties = function() {
     (font || 'sans-serif');
 
   this.drawingContext.textAlign = this._textAlign;
-  if (this._textBaseline === constants.CENTER) {
-    this.drawingContext.textBaseline = constants._CTX_MIDDLE;
+  if (this._textBaseline === CENTER) {
+    this.drawingContext.textBaseline = _CTX_MIDDLE;
   } else {
     this.drawingContext.textBaseline = this._textBaseline;
   }
@@ -1268,4 +1295,4 @@ p5.Renderer2D.prototype.pop = function(style) {
   p5.Renderer.prototype.pop.call(this, style);
 };
 
-module.exports = p5.Renderer2D;
+export default p5.Renderer2D;

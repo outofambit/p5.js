@@ -9,8 +9,16 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import {
+  LEFT,
+  BASELINE,
+  _DEFAULT_TEXT_FILL,
+  CENTER,
+  RIGHT,
+  TOP,
+  BOTTOM
+} from '../core/constants';
 
 /**
  * Base class for font handling
@@ -83,8 +91,8 @@ p5.Font.prototype.textBounds = function(str, x, y, fontSize, opts) {
   // alphabetic baseline.
   var p = (opts && opts.renderer && opts.renderer._pInst) || this.parent,
     ctx = p._renderer.drawingContext,
-    alignment = ctx.textAlign || constants.LEFT,
-    baseline = ctx.textBaseline || constants.BASELINE,
+    alignment = ctx.textAlign || LEFT,
+    baseline = ctx.textBaseline || BASELINE,
     cacheResults = false,
     result,
     key;
@@ -416,7 +424,7 @@ p5.Font.prototype._renderPath = function(line, x, y, options) {
   if (pg._doFill) {
     // if fill hasn't been set by user, use default-text-fill
     if (!pg._fillSet) {
-      pg._setFill(constants._DEFAULT_TEXT_FILL);
+      pg._setFill(_DEFAULT_TEXT_FILL);
     }
     ctx.fill();
   }
@@ -450,22 +458,22 @@ p5.Font.prototype._handleAlignment = function(renderer, line, x, y, textWidth) {
   }
 
   switch (renderer._textAlign) {
-    case constants.CENTER:
+    case CENTER:
       x -= textWidth / 2;
       break;
-    case constants.RIGHT:
+    case RIGHT:
       x -= textWidth;
       break;
   }
 
   switch (renderer._textBaseline) {
-    case constants.TOP:
+    case TOP:
       y += this._textAscent(fontSize);
       break;
-    case constants.CENTER:
+    case CENTER:
       y += this._textAscent(fontSize) / 2;
       break;
-    case constants.BOTTOM:
+    case BOTTOM:
       y -= this._textDescent(fontSize);
       break;
   }
@@ -1238,4 +1246,4 @@ function cacheKey() {
   return hash;
 }
 
-module.exports = p5;
+export default p5;

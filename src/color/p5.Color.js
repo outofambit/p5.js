@@ -9,9 +9,9 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-var color_conversion = require('./color_conversion');
+import p5 from '../core/main';
+import { RGB as _RGB, HSL as _HSL, HSB as _HSB } from '../core/constants';
+import color_conversion from './color_conversion';
 
 /**
  * Each color stores the color mode and level maxes that applied at the
@@ -34,11 +34,7 @@ p5.Color = function(pInst, vals) {
   this._storeModeAndMaxes(pInst._colorMode, pInst._colorMaxes);
 
   // Calculate normalized RGBA values.
-  if (
-    this.mode !== constants.RGB &&
-    this.mode !== constants.HSL &&
-    this.mode !== constants.HSB
-  ) {
+  if (this.mode !== _RGB && this.mode !== _HSL && this.mode !== _HSB) {
     throw new Error(this.mode + ' is an invalid colorMode.');
   } else {
     this._array = p5.Color._parseInputs.apply(this, vals);
@@ -148,11 +144,11 @@ p5.Color.prototype.toString = function(format) {
     case 'hsv':
       if (!this.hsba) this.hsba = color_conversion._rgbaToHSBA(this._array);
       return 'hsb('.concat(
-        this.hsba[0] * this.maxes[constants.HSB][0],
+        this.hsba[0] * this.maxes[_HSB][0],
         ', ',
-        this.hsba[1] * this.maxes[constants.HSB][1],
+        this.hsba[1] * this.maxes[_HSB][1],
         ', ',
-        this.hsba[2] * this.maxes[constants.HSB][2],
+        this.hsba[2] * this.maxes[_HSB][2],
         ')'
       );
 
@@ -172,11 +168,11 @@ p5.Color.prototype.toString = function(format) {
     case 'hsva':
       if (!this.hsba) this.hsba = color_conversion._rgbaToHSBA(this._array);
       return 'hsba('.concat(
-        this.hsba[0] * this.maxes[constants.HSB][0],
+        this.hsba[0] * this.maxes[_HSB][0],
         ', ',
-        this.hsba[1] * this.maxes[constants.HSB][1],
+        this.hsba[1] * this.maxes[_HSB][1],
         ', ',
-        this.hsba[2] * this.maxes[constants.HSB][2],
+        this.hsba[2] * this.maxes[_HSB][2],
         ', ',
         alpha,
         ')'
@@ -199,11 +195,11 @@ p5.Color.prototype.toString = function(format) {
     case 'hsl':
       if (!this.hsla) this.hsla = color_conversion._rgbaToHSLA(this._array);
       return 'hsl('.concat(
-        this.hsla[0] * this.maxes[constants.HSL][0],
+        this.hsla[0] * this.maxes[_HSL][0],
         ', ',
-        this.hsla[1] * this.maxes[constants.HSL][1],
+        this.hsla[1] * this.maxes[_HSL][1],
         ', ',
-        this.hsla[2] * this.maxes[constants.HSL][2],
+        this.hsla[2] * this.maxes[_HSL][2],
         ')'
       );
 
@@ -221,11 +217,11 @@ p5.Color.prototype.toString = function(format) {
     case 'hsla':
       if (!this.hsla) this.hsla = color_conversion._rgbaToHSLA(this._array);
       return 'hsla('.concat(
-        this.hsla[0] * this.maxes[constants.HSL][0],
+        this.hsla[0] * this.maxes[_HSL][0],
         ', ',
-        this.hsla[1] * this.maxes[constants.HSL][1],
+        this.hsla[1] * this.maxes[_HSL][1],
         ', ',
-        this.hsla[2] * this.maxes[constants.HSL][2],
+        this.hsla[2] * this.maxes[_HSL][2],
         ', ',
         alpha,
         ')'
@@ -273,7 +269,7 @@ p5.Color.prototype.toString = function(format) {
  * canvas with gradually changing background color
  */
 p5.Color.prototype.setRed = function(new_red) {
-  this._array[0] = new_red / this.maxes[constants.RGB][0];
+  this._array[0] = new_red / this.maxes[_RGB][0];
   this._calculateLevels();
 };
 
@@ -300,7 +296,7 @@ p5.Color.prototype.setRed = function(new_red) {
  * canvas with gradually changing background color
  **/
 p5.Color.prototype.setGreen = function(new_green) {
-  this._array[1] = new_green / this.maxes[constants.RGB][1];
+  this._array[1] = new_green / this.maxes[_RGB][1];
   this._calculateLevels();
 };
 
@@ -327,7 +323,7 @@ p5.Color.prototype.setGreen = function(new_green) {
  * canvas with gradually changing background color
  **/
 p5.Color.prototype.setBlue = function(new_blue) {
-  this._array[2] = new_blue / this.maxes[constants.RGB][2];
+  this._array[2] = new_blue / this.maxes[_RGB][2];
   this._calculateLevels();
 };
 
@@ -398,18 +394,18 @@ p5.Color.prototype._getMaxes = function() {
 };
 
 p5.Color.prototype._getBlue = function() {
-  return this._array[2] * this.maxes[constants.RGB][2];
+  return this._array[2] * this.maxes[_RGB][2];
 };
 
 p5.Color.prototype._getBrightness = function() {
   if (!this.hsba) {
     this.hsba = color_conversion._rgbaToHSBA(this._array);
   }
-  return this.hsba[2] * this.maxes[constants.HSB][2];
+  return this.hsba[2] * this.maxes[_HSB][2];
 };
 
 p5.Color.prototype._getGreen = function() {
-  return this._array[1] * this.maxes[constants.RGB][1];
+  return this._array[1] * this.maxes[_RGB][1];
 };
 
 /**
@@ -419,16 +415,16 @@ p5.Color.prototype._getGreen = function() {
  * otherwise.
  */
 p5.Color.prototype._getHue = function() {
-  if (this.mode === constants.HSB) {
+  if (this.mode === _HSB) {
     if (!this.hsba) {
       this.hsba = color_conversion._rgbaToHSBA(this._array);
     }
-    return this.hsba[0] * this.maxes[constants.HSB][0];
+    return this.hsba[0] * this.maxes[_HSB][0];
   } else {
     if (!this.hsla) {
       this.hsla = color_conversion._rgbaToHSLA(this._array);
     }
-    return this.hsla[0] * this.maxes[constants.HSL][0];
+    return this.hsla[0] * this.maxes[_HSL][0];
   }
 };
 
@@ -436,11 +432,11 @@ p5.Color.prototype._getLightness = function() {
   if (!this.hsla) {
     this.hsla = color_conversion._rgbaToHSLA(this._array);
   }
-  return this.hsla[2] * this.maxes[constants.HSL][2];
+  return this.hsla[2] * this.maxes[_HSL][2];
 };
 
 p5.Color.prototype._getRed = function() {
-  return this._array[0] * this.maxes[constants.RGB][0];
+  return this._array[0] * this.maxes[_RGB][0];
 };
 
 /**
@@ -449,16 +445,16 @@ p5.Color.prototype._getRed = function() {
  * to the HSL saturation otherwise.
  */
 p5.Color.prototype._getSaturation = function() {
-  if (this.mode === constants.HSB) {
+  if (this.mode === _HSB) {
     if (!this.hsba) {
       this.hsba = color_conversion._rgbaToHSBA(this._array);
     }
-    return this.hsba[1] * this.maxes[constants.HSB][1];
+    return this.hsba[1] * this.maxes[_HSB][1];
   } else {
     if (!this.hsla) {
       this.hsla = color_conversion._rgbaToHSLA(this._array);
     }
-    return this.hsla[1] * this.maxes[constants.HSL][1];
+    return this.hsla[1] * this.maxes[_HSL][1];
   }
 };
 
@@ -827,9 +823,9 @@ p5.Color._parseInputs = function(r, g, b, a) {
     }
 
     // Convert to RGBA and return.
-    if (mode === constants.HSL) {
+    if (mode === _HSL) {
       return color_conversion._hslaToRGBA(results);
-    } else if (mode === constants.HSB) {
+    } else if (mode === _HSB) {
       return color_conversion._hsbaToRGBA(results);
     } else {
       return results;
@@ -1018,4 +1014,4 @@ p5.Color._parseInputs = function(r, g, b, a) {
   return results;
 };
 
-module.exports = p5.Color;
+export default p5.Color;

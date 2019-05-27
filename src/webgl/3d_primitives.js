@@ -7,9 +7,9 @@
  */
 
 'use strict';
-var p5 = require('../core/main');
-require('./p5.Geometry');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+require('./p5.Geometry').default;
+import { TWO_PI, OPEN, PIE, CHORD, NORMAL, CLOSE } from '../core/constants';
 
 /**
  * Draw a plane with given a width and height
@@ -826,16 +826,7 @@ p5.RendererGL.prototype.triangle = function(args) {
 };
 
 p5.RendererGL.prototype.ellipse = function(args) {
-  this.arc(
-    args[0],
-    args[1],
-    args[2],
-    args[3],
-    0,
-    constants.TWO_PI,
-    constants.OPEN,
-    args[4]
-  );
+  this.arc(args[0], args[1], args[2], args[3], 0, TWO_PI, OPEN, args[4]);
 };
 
 p5.RendererGL.prototype.arc = function(args) {
@@ -852,7 +843,7 @@ p5.RendererGL.prototype.arc = function(args) {
   var gId;
 
   // check if it is an ellipse or an arc
-  if (Math.abs(stop - start) >= constants.TWO_PI) {
+  if (Math.abs(stop - start) >= TWO_PI) {
     shape = 'ellipse';
     gId = shape + '|' + detail + '|';
   } else {
@@ -867,7 +858,7 @@ p5.RendererGL.prototype.arc = function(args) {
       // if the start and stop angles are not the same, push vertices to the array
       if (start.toFixed(10) !== stop.toFixed(10)) {
         // if the mode specified is PIE or null, push the mid point of the arc in vertices
-        if (mode === constants.PIE || typeof mode === 'undefined') {
+        if (mode === PIE || typeof mode === 'undefined') {
           this.vertices.push(new p5.Vector(0.5, 0.5, 0));
           this.uvs.push([0.5, 0.5]);
         }
@@ -891,7 +882,7 @@ p5.RendererGL.prototype.arc = function(args) {
 
         // check the mode specified in order to push vertices and faces, different for each mode
         switch (mode) {
-          case constants.PIE:
+          case PIE:
             this.faces.push([
               0,
               this.vertices.length - 2,
@@ -905,12 +896,12 @@ p5.RendererGL.prototype.arc = function(args) {
             this.strokeIndices.push([0, this.vertices.length - 1]);
             break;
 
-          case constants.CHORD:
+          case CHORD:
             this.strokeIndices.push([0, 1]);
             this.strokeIndices.push([0, this.vertices.length - 1]);
             break;
 
-          case constants.OPEN:
+          case OPEN:
             this.strokeIndices.push([0, 1]);
             break;
 
@@ -1553,7 +1544,7 @@ p5.RendererGL.prototype.image = function(
   this._pInst.push();
 
   this._pInst.texture(img);
-  this._pInst.textureMode(constants.NORMAL);
+  this._pInst.textureMode(NORMAL);
 
   var u0 = 0;
   if (sx <= img.width) {
@@ -1580,9 +1571,9 @@ p5.RendererGL.prototype.image = function(
   this.vertex(dx + dWidth, dy, 0, u1, v0);
   this.vertex(dx + dWidth, dy + dHeight, 0, u1, v1);
   this.vertex(dx, dy + dHeight, 0, u0, v1);
-  this.endShape(constants.CLOSE);
+  this.endShape(CLOSE);
 
   this._pInst.pop();
 };
 
-module.exports = p5;
+export default p5;

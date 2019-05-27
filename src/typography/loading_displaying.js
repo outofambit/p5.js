@@ -7,11 +7,11 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-var opentype = require('opentype.js');
+import p5 from '../core/main';
+import { _DEFAULT_LEADMULT } from '../core/constants';
+import { load } from 'opentype.js';
 
-require('../core/error_helpers');
+require('../core/error_helpers').default;
 
 /**
  * Loads an opentype font file (.otf, .ttf) from a file or a URL,
@@ -89,7 +89,7 @@ p5.prototype.loadFont = function(path, onSuccess, onError) {
   var p5Font = new p5.Font(this);
 
   var self = this;
-  opentype.load(path, function(err, font) {
+  load(path, function(err, font) {
     if (err) {
       p5._friendlyFileLoadError(4, path);
       if (typeof onError !== 'undefined') {
@@ -291,10 +291,7 @@ p5.prototype.textFont = function(theFont, theSize) {
 
     if (theSize) {
       this._renderer._setProperty('_textSize', theSize);
-      this._renderer._setProperty(
-        '_textLeading',
-        theSize * constants._DEFAULT_LEADMULT
-      );
+      this._renderer._setProperty('_textLeading', theSize * _DEFAULT_LEADMULT);
     }
 
     return this._renderer._applyTextProperties();
@@ -303,4 +300,4 @@ p5.prototype.textFont = function(theFont, theSize) {
   return this._renderer._textFont;
 };
 
-module.exports = p5;
+export default p5;

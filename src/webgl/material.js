@@ -7,9 +7,23 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-require('./p5.Texture');
+import p5 from '../core/main';
+import {
+  FILL,
+  TEXTURE,
+  IMAGE,
+  NORMAL,
+  BLEND,
+  ADD,
+  MULTIPLY,
+  SCREEN,
+  EXCLUSION,
+  REPLACE,
+  SUBTRACT,
+  DARKEST,
+  LIGHTEST
+} from '../core/constants';
+require('./p5.Texture').default;
 
 /**
  * Loads a custom shader from the provided vertex and fragment
@@ -310,7 +324,7 @@ p5.prototype.resetShader = function() {
 p5.prototype.normalMaterial = function() {
   this._assert3d('normalMaterial');
   p5._validateParameters('normalMaterial', arguments);
-  this._renderer.drawMode = constants.FILL;
+  this._renderer.drawMode = FILL;
   this._renderer._useSpecularMaterial = false;
   this._renderer._useNormalMaterial = true;
   this._renderer.curFillColor = [1, 1, 1, 1];
@@ -407,7 +421,7 @@ p5.prototype.texture = function(tex) {
   this._assert3d('texture');
   p5._validateParameters('texture', arguments);
 
-  this._renderer.drawMode = constants.TEXTURE;
+  this._renderer.drawMode = TEXTURE;
   this._renderer._useSpecularMaterial = false;
   this._renderer._useNormalMaterial = false;
   this._renderer._tex = tex;
@@ -486,7 +500,7 @@ p5.prototype.texture = function(tex) {
  *
  */
 p5.prototype.textureMode = function(mode) {
-  if (mode !== constants.IMAGE && mode !== constants.NORMAL) {
+  if (mode !== IMAGE && mode !== NORMAL) {
     console.warn(
       'You tried to set ' + mode + ' textureMode only supports IMAGE & NORMAL '
     );
@@ -726,7 +740,7 @@ p5.prototype.shininess = function(shine) {
 p5.RendererGL.prototype._applyColorBlend = function(colors) {
   var gl = this.GL;
 
-  var isTexture = this.drawMode === constants.TEXTURE;
+  var isTexture = this.drawMode === TEXTURE;
   if (isTexture || colors[colors.length - 1] < 1.0) {
     gl.depthMask(isTexture);
     gl.enable(gl.BLEND);
@@ -746,20 +760,20 @@ p5.RendererGL.prototype._applyColorBlend = function(colors) {
 p5.RendererGL.prototype._applyBlendMode = function() {
   var gl = this.GL;
   switch (this.curBlendMode) {
-    case constants.BLEND:
-    case constants.ADD:
+    case BLEND:
+    case ADD:
       gl.blendEquation(gl.FUNC_ADD);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       break;
-    case constants.MULTIPLY:
+    case MULTIPLY:
       gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
       gl.blendFuncSeparate(gl.ZERO, gl.SRC_COLOR, gl.ONE, gl.ONE);
       break;
-    case constants.SCREEN:
+    case SCREEN:
       gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
       gl.blendFuncSeparate(gl.ONE_MINUS_DST_COLOR, gl.ONE, gl.ONE, gl.ONE);
       break;
-    case constants.EXCLUSION:
+    case EXCLUSION:
       gl.blendEquationSeparate(gl.FUNC_ADD, gl.FUNC_ADD);
       gl.blendFuncSeparate(
         gl.ONE_MINUS_DST_COLOR,
@@ -768,15 +782,15 @@ p5.RendererGL.prototype._applyBlendMode = function() {
         gl.ONE
       );
       break;
-    case constants.REPLACE:
+    case REPLACE:
       gl.blendEquation(gl.FUNC_ADD);
       gl.blendFunc(gl.ONE, gl.ZERO);
       break;
-    case constants.SUBTRACT:
+    case SUBTRACT:
       gl.blendEquationSeparate(gl.FUNC_REVERSE_SUBTRACT, gl.FUNC_ADD);
       gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE, gl.ONE, gl.ONE);
       break;
-    case constants.DARKEST:
+    case DARKEST:
       if (this.blendExt) {
         gl.blendEquationSeparate(this.blendExt.MIN_EXT, gl.FUNC_ADD);
         gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE);
@@ -786,7 +800,7 @@ p5.RendererGL.prototype._applyBlendMode = function() {
         );
       }
       break;
-    case constants.LIGHTEST:
+    case LIGHTEST:
       if (this.blendExt) {
         gl.blendEquationSeparate(this.blendExt.MAX_EXT, gl.FUNC_ADD);
         gl.blendFuncSeparate(gl.ONE, gl.ONE, gl.ONE, gl.ONE);
@@ -804,4 +818,4 @@ p5.RendererGL.prototype._applyBlendMode = function() {
   }
 };
 
-module.exports = p5;
+export default p5;

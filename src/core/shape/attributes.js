@@ -8,8 +8,18 @@
 
 'use strict';
 
-var p5 = require('../main');
-var constants = require('../constants');
+import p5 from '../main';
+import {
+  CORNER,
+  CORNERS,
+  RADIUS,
+  CENTER,
+  ROUND,
+  SQUARE,
+  PROJECT,
+  BEVEL,
+  MITER
+} from '../constants';
 
 /**
  * Modifies the location from which ellipses are drawn by changing the way
@@ -69,12 +79,7 @@ var constants = require('../constants');
  */
 p5.prototype.ellipseMode = function(m) {
   p5._validateParameters('ellipseMode', arguments);
-  if (
-    m === constants.CORNER ||
-    m === constants.CORNERS ||
-    m === constants.RADIUS ||
-    m === constants.CENTER
-  ) {
+  if (m === CORNER || m === CORNERS || m === RADIUS || m === CENTER) {
     this._renderer._ellipseMode = m;
   }
   return this;
@@ -171,12 +176,7 @@ p5.prototype.noSmooth = function() {
  */
 p5.prototype.rectMode = function(m) {
   p5._validateParameters('rectMode', arguments);
-  if (
-    m === constants.CORNER ||
-    m === constants.CORNERS ||
-    m === constants.RADIUS ||
-    m === constants.CENTER
-  ) {
+  if (m === CORNER || m === CORNERS || m === RADIUS || m === CENTER) {
     this._renderer._rectMode = m;
   }
   return this;
@@ -243,11 +243,7 @@ p5.prototype.smooth = function() {
  */
 p5.prototype.strokeCap = function(cap) {
   p5._validateParameters('strokeCap', arguments);
-  if (
-    cap === constants.ROUND ||
-    cap === constants.SQUARE ||
-    cap === constants.PROJECT
-  ) {
+  if (cap === ROUND || cap === SQUARE || cap === PROJECT) {
     this._renderer.strokeCap(cap);
   }
   return this;
@@ -310,11 +306,7 @@ p5.prototype.strokeCap = function(cap) {
  */
 p5.prototype.strokeJoin = function(join) {
   p5._validateParameters('strokeJoin', arguments);
-  if (
-    join === constants.ROUND ||
-    join === constants.BEVEL ||
-    join === constants.MITER
-  ) {
+  if (join === ROUND || join === BEVEL || join === MITER) {
     this._renderer.strokeJoin(join);
   }
   return this;
@@ -349,4 +341,4 @@ p5.prototype.strokeWeight = function(w) {
   return this;
 };
 
-module.exports = p5;
+export default p5;

@@ -8,9 +8,9 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var constants = require('../core/constants');
-require('./p5.Color');
+import p5 from '../core/main';
+import { RGB, HSB, HSL } from '../core/constants';
+import './p5.Color';
 
 /**
  * The <a href="#/p5/background">background()</a> function sets the color used for the background of the
@@ -308,11 +308,7 @@ p5.prototype.clear = function() {
  */
 p5.prototype.colorMode = function(mode, max1, max2, max3, maxA) {
   p5._validateParameters('colorMode', arguments);
-  if (
-    mode === constants.RGB ||
-    mode === constants.HSB ||
-    mode === constants.HSL
-  ) {
+  if (mode === RGB || mode === HSB || mode === HSL) {
     // Set color mode.
     this._colorMode = mode;
 
@@ -748,4 +744,4 @@ p5.prototype.stroke = function() {
   return this;
 };
 
-module.exports = p5;
+export default p5;

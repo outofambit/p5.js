@@ -8,10 +8,10 @@
 
 'use strict';
 
-var p5 = require('../main');
-var constants = require('../constants');
-var canvas = require('../helpers');
-require('../error_helpers');
+import p5 from '../main';
+import { TWO_PI, HALF_PI, PI } from '../constants';
+import { modeAdjust } from '../helpers';
+require('../error_helpers').default;
 
 /**
  * This function does 3 things:
@@ -49,8 +49,8 @@ p5.prototype._normalizeArcAngles = function(
   // adjustments made in the steps that precede it.
 
   // Constrain both start and stop to [0,TWO_PI).
-  start = start - constants.TWO_PI * Math.floor(start / constants.TWO_PI);
-  stop = stop - constants.TWO_PI * Math.floor(stop / constants.TWO_PI);
+  start = start - TWO_PI * Math.floor(start / TWO_PI);
+  stop = stop - TWO_PI * Math.floor(stop / TWO_PI);
 
   // Get the angular separation between the requested start and stop points.
   //
@@ -66,30 +66,30 @@ p5.prototype._normalizeArcAngles = function(
   // epsilon smaller...)
   separation = Math.min(
     Math.abs(start - stop),
-    constants.TWO_PI - Math.abs(start - stop)
+    TWO_PI - Math.abs(start - stop)
   );
 
   // Optionally adjust the angles to counter linear scaling.
   if (correctForScaling) {
-    if (start <= constants.HALF_PI) {
+    if (start <= HALF_PI) {
       start = Math.atan(width / height * Math.tan(start));
-    } else if (start > constants.HALF_PI && start <= 3 * constants.HALF_PI) {
-      start = Math.atan(width / height * Math.tan(start)) + constants.PI;
+    } else if (start > HALF_PI && start <= 3 * HALF_PI) {
+      start = Math.atan(width / height * Math.tan(start)) + PI;
     } else {
-      start = Math.atan(width / height * Math.tan(start)) + constants.TWO_PI;
+      start = Math.atan(width / height * Math.tan(start)) + TWO_PI;
     }
-    if (stop <= constants.HALF_PI) {
+    if (stop <= HALF_PI) {
       stop = Math.atan(width / height * Math.tan(stop));
-    } else if (stop > constants.HALF_PI && stop <= 3 * constants.HALF_PI) {
-      stop = Math.atan(width / height * Math.tan(stop)) + constants.PI;
+    } else if (stop > HALF_PI && stop <= 3 * HALF_PI) {
+      stop = Math.atan(width / height * Math.tan(stop)) + PI;
     } else {
-      stop = Math.atan(width / height * Math.tan(stop)) + constants.TWO_PI;
+      stop = Math.atan(width / height * Math.tan(stop)) + TWO_PI;
     }
   }
 
   // Ensure that start <= stop < start + TWO_PI.
   if (start > stop) {
-    stop += constants.TWO_PI;
+    stop += TWO_PI;
   }
 
   return {
@@ -181,7 +181,7 @@ p5.prototype.arc = function(x, y, w, h, start, stop, mode, detail) {
   w = Math.abs(w);
   h = Math.abs(h);
 
-  var vals = canvas.modeAdjust(x, y, w, h, this._renderer._ellipseMode);
+  var vals = modeAdjust(x, y, w, h, this._renderer._ellipseMode);
   var angles = this._normalizeArcAngles(start, stop, vals.w, vals.h, true);
 
   if (angles.correspondToSamePoint) {
@@ -261,7 +261,7 @@ p5.prototype.ellipse = function(x, y, w, h, detailX) {
     h = Math.abs(h);
   }
 
-  var vals = canvas.modeAdjust(x, y, w, h, this._renderer._ellipseMode);
+  var vals = modeAdjust(x, y, w, h, this._renderer._ellipseMode);
   this._renderer.ellipse([vals.x, vals.y, vals.w, vals.h, detailX]);
 
   return this;
@@ -519,7 +519,7 @@ p5.prototype.rect = function() {
   p5._validateParameters('rect', arguments);
 
   if (this._renderer._doStroke || this._renderer._doFill) {
-    var vals = canvas.modeAdjust(
+    var vals = modeAdjust(
       arguments[0],
       arguments[1],
       arguments[2],
@@ -626,4 +626,4 @@ p5.prototype.triangle = function() {
   return this;
 };
 
-module.exports = p5;
+export default p5;

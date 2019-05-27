@@ -7,12 +7,12 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var Filters = require('./filters');
-var canvas = require('../core/helpers');
-var constants = require('../core/constants');
+import p5 from '../core/main';
+import { _toPixels } from './filters';
+import { modeAdjust } from '../core/helpers';
+import { CORNER, CORNERS, CENTER } from '../core/constants';
 
-require('../core/error_helpers');
+require('../core/error_helpers').default;
 
 /**
  * Loads an image from a path and creates a <a href="#/p5.Image">p5.Image</a> from it.
@@ -289,7 +289,7 @@ p5.prototype.image = function(
   _sh *= pd;
   _sw *= pd;
 
-  var vals = canvas.modeAdjust(_dx, _dy, _dw, _dh, this._renderer._imageMode);
+  var vals = modeAdjust(_dx, _dy, _dw, _dh, this._renderer._imageMode);
 
   // tint the image if there is a tint
   this._renderer.image(img, _sx, _sy, _sw, _sh, vals.x, vals.y, vals.w, vals.h);
@@ -437,7 +437,7 @@ p5.prototype._getTintedImageCanvas = function(img) {
   if (!img.canvas) {
     return img;
   }
-  var pixels = Filters._toPixels(img.canvas);
+  var pixels = _toPixels(img.canvas);
   var tmpCanvas = document.createElement('canvas');
   tmpCanvas.width = img.canvas.width;
   tmpCanvas.height = img.canvas.height;
@@ -528,13 +528,9 @@ p5.prototype._getTintedImageCanvas = function(img) {
  */
 p5.prototype.imageMode = function(m) {
   p5._validateParameters('imageMode', arguments);
-  if (
-    m === constants.CORNER ||
-    m === constants.CORNERS ||
-    m === constants.CENTER
-  ) {
+  if (m === CORNER || m === CORNERS || m === CENTER) {
     this._renderer._imageMode = m;
   }
 };
 
-module.exports = p5;
+export default p5;

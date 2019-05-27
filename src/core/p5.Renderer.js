@@ -6,8 +6,21 @@
 
 'use strict';
 
-var p5 = require('./main');
-var constants = require('../core/constants');
+import p5 from './main';
+import {
+  NORMAL,
+  LEFT,
+  BASELINE,
+  CORNER,
+  CENTER,
+  _DEFAULT_LEADMULT,
+  ITALIC,
+  BOLD,
+  BOLDITALIC,
+  RIGHT,
+  BOTTOM,
+  TOP
+} from '../core/constants';
 
 /**
  * Main graphics and rendering context, as well as the base API
@@ -41,16 +54,16 @@ p5.Renderer = function(elt, pInst, isMainCanvas) {
   this._textSize = 12;
   this._textLeading = 15;
   this._textFont = 'sans-serif';
-  this._textStyle = constants.NORMAL;
+  this._textStyle = NORMAL;
   this._textAscent = null;
   this._textDescent = null;
-  this._textAlign = constants.LEFT;
-  this._textBaseline = constants.BASELINE;
+  this._textAlign = LEFT;
+  this._textBaseline = BASELINE;
 
-  this._rectMode = constants.CORNER;
-  this._ellipseMode = constants.CENTER;
+  this._rectMode = CORNER;
+  this._ellipseMode = CENTER;
   this._curveTightness = 0;
-  this._imageMode = constants.CORNER;
+  this._imageMode = CORNER;
 
   this._tint = null;
   this._doStroke = true;
@@ -155,7 +168,7 @@ p5.Renderer.prototype.textLeading = function(l) {
 p5.Renderer.prototype.textSize = function(s) {
   if (typeof s === 'number') {
     this._setProperty('_textSize', s);
-    this._setProperty('_textLeading', s * constants._DEFAULT_LEADMULT);
+    this._setProperty('_textLeading', s * _DEFAULT_LEADMULT);
     return this._applyTextProperties();
   }
 
@@ -164,12 +177,7 @@ p5.Renderer.prototype.textSize = function(s) {
 
 p5.Renderer.prototype.textStyle = function(s) {
   if (s) {
-    if (
-      s === constants.NORMAL ||
-      s === constants.ITALIC ||
-      s === constants.BOLD ||
-      s === constants.BOLDITALIC
-    ) {
+    if (s === NORMAL || s === ITALIC || s === BOLD || s === BOLDITALIC) {
       this._setProperty('_textStyle', s);
     }
 
@@ -253,16 +261,16 @@ p5.Renderer.prototype.text = function(str, x, y, maxWidth, maxHeight) {
       }
     }
 
-    if (this._rectMode === constants.CENTER) {
+    if (this._rectMode === CENTER) {
       x -= maxWidth / 2;
       y -= maxHeight / 2;
     }
 
     switch (this._textAlign) {
-      case constants.CENTER:
+      case CENTER:
         x += maxWidth / 2;
         break;
-      case constants.RIGHT:
+      case RIGHT:
         x += maxWidth;
         break;
     }
@@ -270,15 +278,15 @@ p5.Renderer.prototype.text = function(str, x, y, maxWidth, maxHeight) {
     var baselineHacked = false;
     if (typeof maxHeight !== 'undefined') {
       switch (this._textBaseline) {
-        case constants.BOTTOM:
+        case BOTTOM:
           y += maxHeight - totalHeight;
           break;
-        case constants.CENTER:
+        case CENTER:
           y += (maxHeight - totalHeight) / 2;
           break;
-        case constants.BASELINE:
+        case BASELINE:
           baselineHacked = true;
-          this._textBaseline = constants.TOP;
+          this._textBaseline = TOP;
           break;
       }
 
@@ -305,7 +313,7 @@ p5.Renderer.prototype.text = function(str, x, y, maxWidth, maxHeight) {
       y += p.textLeading();
 
       if (baselineHacked) {
-        this._textBaseline = constants.BASELINE;
+        this._textBaseline = BASELINE;
       }
     }
   } else {
@@ -313,9 +321,9 @@ p5.Renderer.prototype.text = function(str, x, y, maxWidth, maxHeight) {
     // need to adjust anything for vertical align top or baseline
     var offset = 0,
       vAlign = p.textAlign().vertical;
-    if (vAlign === constants.CENTER) {
+    if (vAlign === CENTER) {
       offset = (cars.length - 1) * p.textLeading() / 2;
-    } else if (vAlign === constants.BOTTOM) {
+    } else if (vAlign === BOTTOM) {
       offset = (cars.length - 1) * p.textLeading();
     }
 
@@ -404,4 +412,4 @@ function calculateOffset(object) {
   return [currentLeft, currentTop];
 }
 
-module.exports = p5.Renderer;
+export default p5.Renderer;

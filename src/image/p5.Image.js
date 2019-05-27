@@ -13,8 +13,8 @@
 
 'use strict';
 
-var p5 = require('../core/main');
-var Filters = require('./filters');
+import p5 from '../core/main';
+import Filters, { apply } from './filters';
 
 /*
  * Class methods
@@ -667,7 +667,7 @@ p5.Image.prototype.mask = function(p5Image) {
  *
  */
 p5.Image.prototype.filter = function(operation, value) {
-  Filters.apply(this.canvas, Filters[operation], value);
+  apply(this.canvas, Filters[operation], value);
   this.setModified(true);
 };
 
@@ -828,4 +828,4 @@ p5.Image.prototype.save = function(filename, extension) {
   p5.prototype.saveCanvas(this.canvas, filename, extension);
 };
 
-module.exports = p5.Image;
+export default p5.Image;
