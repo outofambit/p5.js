@@ -37,8 +37,8 @@ module.exports = function(grunt) {
       }
 
       const bundle = browseified
-        .transform('brfs')
         .transform('babelify')
+        .transform('brfs')
         .bundle();
 
       // Start the generated output with the banner comment,
