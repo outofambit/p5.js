@@ -6,7 +6,7 @@
 'use strict';
 
 import p5 from './main';
-import constants, { CLOSE, hasOwnProperty } from './constants';
+import constants, { CLOSE } from './constants';
 
 // p5.js blue, p5.js orange, auto dark green; fallback p5.js darkened magenta
 // See testColors below for all the color codes and names
@@ -223,11 +223,15 @@ if (typeof IS_MINIFIED !== 'undefined') {
     if (queryResult.hasOwnProperty('overloads')) {
       // add all the overloads
       for (var i = 0; i < queryResult.overloads.length; i++) {
-        overloads.push({ formats: queryResult.overloads[i].params });
+        overloads.push({
+          formats: queryResult.overloads[i].params
+        });
       }
     } else {
       // no overloads, just add the main method definition
-      overloads.push({ formats: queryResult.params || [] });
+      overloads.push({
+        formats: queryResult.params || []
+      });
     }
 
     // parse the parameter types for each overload
@@ -290,7 +294,7 @@ if (typeof IS_MINIFIED !== 'undefined') {
                 var matchConst;
                 while ((matchConst = reConst.exec(match)) !== null) {
                   var name = matchConst[0];
-                  if (hasOwnProperty(name)) {
+                  if (constants.hasOwnProperty(name)) {
                     values[constants[name]] = true;
                     names.push(name);
                   }
@@ -311,7 +315,10 @@ if (typeof IS_MINIFIED !== 'undefined') {
           }
           // builtin
           if (builtinTypes.indexOf(lowerType) >= 0) {
-            return { name: type, builtin: lowerType };
+            return {
+              name: type,
+              builtin: lowerType
+            };
           }
 
           // find type's prototype
@@ -328,10 +335,16 @@ if (typeof IS_MINIFIED !== 'undefined') {
             t = t && t[p];
           });
           if (t) {
-            return { name: type, prototype: t };
+            return {
+              name: type,
+              prototype: t
+            };
           }
 
-          return { name: type, type: lowerType };
+          return {
+            name: type,
+            type: lowerType
+          };
         });
       });
     });
@@ -709,7 +722,10 @@ var defineMisusedAtTopLevelCode = function() {
           type = 'variable';
         }
 
-        return { name: name, type: type };
+        return {
+          name: name,
+          type: type
+        };
       });
   };
 
