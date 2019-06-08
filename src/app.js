@@ -85,4 +85,4 @@ import './webgl/text';
 
 import './core/init';
 
-export default p5;
+module.exports = p5;
