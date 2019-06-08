@@ -11,7 +11,7 @@
 import p5 from '../core/main';
 import { RGB, HSB, HSL } from '../core/constants';
 import './p5.Color';
-require('../core/error_helpers').default;
+import '../core/error_helpers';
 
 /**
  * Extracts the alpha value from a color or pixel array.

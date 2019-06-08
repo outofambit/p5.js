@@ -9,7 +9,7 @@
 'use strict';
 
 import p5 from '../core/main';
-require('./p5.Geometry').default;
+import './p5.Geometry';
 
 /**
  * Load a 3d model from an OBJ file.

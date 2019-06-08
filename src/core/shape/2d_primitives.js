@@ -11,7 +11,7 @@
 import p5 from '../main';
 import { TWO_PI, HALF_PI, PI } from '../constants';
 import { modeAdjust } from '../helpers';
-require('../error_helpers').default;
+import '../error_helpers';
 
 /**
  * This function does 3 things:

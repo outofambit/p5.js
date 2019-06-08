@@ -8,7 +8,7 @@
 'use strict';
 
 import p5 from '../core/main';
-require('../core/error_helpers').default;
+import '../core/error_helpers';
 
 //return p5; //LM is this a mistake?
 

@@ -14,7 +14,7 @@ import p5 from '../core/main';
 import 'whatwg-fetch';
 require('es6-promise').polyfill();
 import fetchJsonp from 'fetch-jsonp';
-require('../core/error_helpers').default;
+import '../core/error_helpers';
 
 /**
  * Loads a JSON file from a file or a URL, and returns an Object.

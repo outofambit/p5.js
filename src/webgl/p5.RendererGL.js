@@ -21,10 +21,10 @@ import {
   DODGE
 } from '../core/constants';
 import { primitiveType, GluTesselator, gluEnum } from 'libtess';
-require('./p5.Shader').default;
-require('./p5.Camera').default;
-require('../core/p5.Renderer').default;
-require('./p5.Matrix').default;
+import './p5.Shader';
+import './p5.Camera';
+import '../core/p5.Renderer';
+import './p5.Matrix';
 const fs = require('fs');
 
 var defaultShaders = {

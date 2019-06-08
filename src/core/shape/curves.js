@@ -8,7 +8,7 @@
 'use strict';
 
 import p5 from '../main';
-require('../error_helpers').default;
+import '../error_helpers';
 
 /**
  * Draws a cubic Bezier curve on the screen. These curves are defined by a

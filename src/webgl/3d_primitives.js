@@ -8,7 +8,7 @@
 
 'use strict';
 import p5 from '../core/main';
-require('./p5.Geometry').default;
+import './p5.Geometry';
 import { TWO_PI, OPEN, PIE, CHORD, NORMAL, CLOSE } from '../core/constants';
 
 /**

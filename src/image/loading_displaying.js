@@ -12,7 +12,7 @@ import { _toPixels } from './filters';
 import { modeAdjust } from '../core/helpers';
 import { CORNER, CORNERS, CENTER } from '../core/constants';
 
-require('../core/error_helpers').default;
+import '../core/error_helpers';
 
 /**
  * Loads an image from a path and creates a <a href="#/p5.Image">p5.Image</a> from it.

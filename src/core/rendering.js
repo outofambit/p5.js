@@ -8,9 +8,9 @@
 
 import p5 from './main';
 import { P2D, WEBGL, NORMAL, BLEND } from './constants';
-require('./p5.Graphics').default;
-require('./p5.Renderer2D').default;
-require('../webgl/p5.RendererGL').default;
+import './p5.Graphics';
+import './p5.Renderer2D';
+import '../webgl/p5.RendererGL';
 var defaultId = 'defaultCanvas0'; // this gets set again in createCanvas
 var defaultClass = 'p5Canvas';
 
