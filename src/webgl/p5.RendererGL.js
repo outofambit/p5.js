@@ -25,6 +25,7 @@ import './p5.Shader';
 import './p5.Camera';
 import '../core/p5.Renderer';
 import './p5.Matrix';
+// we use `require` here because `brfs` doesn't understand import syntax
 const fs = require('fs');
 
 var defaultShaders = {
