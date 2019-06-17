@@ -61,16 +61,16 @@
 
 function getYuidocOptions() {
   var BASE_YUIDOC_OPTIONS = {
-    name: '<%= pkg.name %>',
-    description: '<%= pkg.description %>',
-    version: '<%= pkg.version %>',
-    url: '<%= pkg.homepage %>',
+    name: "<%= pkg.name %>",
+    description: "<%= pkg.description %>",
+    version: "<%= pkg.version %>",
+    url: "<%= pkg.homepage %>",
     options: {
-      paths: ['src/', 'lib/addons/'],
-      themedir: 'docs/yuidoc-p5-theme/',
+      paths: ["src/", "lib/addons/"],
+      themedir: "docs/yuidoc-p5-theme/",
       helpers: [],
-      preprocessor: './docs/preprocessor.js',
-      outdir: 'docs/reference/'
+      preprocessor: "./docs/preprocessor.js",
+      outdir: "docs/reference/"
     }
   };
 
@@ -81,31 +81,31 @@ function getYuidocOptions() {
     dev: JSON.parse(JSON.stringify(BASE_YUIDOC_OPTIONS))
   };
 
-  o.prod.options.helpers.push('docs/yuidoc-p5-theme/helpers/helpers_prod.js');
-  o.dev.options.helpers.push('docs/yuidoc-p5-theme/helpers/helpers_dev.js');
+  o.prod.options.helpers.push("docs/yuidoc-p5-theme/helpers/helpers_prod.js");
+  o.dev.options.helpers.push("docs/yuidoc-p5-theme/helpers/helpers_dev.js");
 
   return o;
 }
 
 module.exports = function(grunt) {
   // Specify what reporter we'd like to use for Mocha
-  var quietReport = process.env.TRAVIS || grunt.option('quiet');
-  var reporter = quietReport ? 'spec' : 'Nyan';
+  var quietReport = process.env.TRAVIS || grunt.option("quiet");
+  var reporter = quietReport ? "spec" : "Nyan";
 
   // Load karma tasks from an external file to keep this file clean
-  var karmaTasks = require('./grunt-karma.js');
+  var karmaTasks = require("./grunt-karma.js");
 
   // For the static server used in running tests, configure the keepalive.
   // (might not be useful at all.)
   var keepalive = false;
-  if (grunt.option('keepalive')) {
+  if (grunt.option("keepalive")) {
     keepalive = true;
   }
 
   var mochaConfig = {
     yui: {
       options: {
-        urls: ['http://localhost:9001/test/test-reference.html'],
+        urls: ["http://localhost:9001/test/test-reference.html"],
         reporter: reporter,
         run: false,
         log: true,
@@ -116,8 +116,8 @@ module.exports = function(grunt) {
     test: {
       options: {
         urls: [
-          'http://localhost:9001/test/test.html',
-          'http://localhost:9001/test/test-minified.html'
+          "http://localhost:9001/test/test.html",
+          "http://localhost:9001/test/test-minified.html"
         ],
         reporter: reporter,
         run: true,
@@ -131,28 +131,28 @@ module.exports = function(grunt) {
 
   let gruntConfig = {
     // read in the package, used for knowing the current version, et al.
-    pkg: grunt.file.readJSON('package.json'),
+    pkg: grunt.file.readJSON("package.json"),
 
     // Configure style consistency checking for this file, the source, and the tests.
     eslint: {
       options: {
-        format: 'unix'
+        format: "unix"
       },
       build: {
         src: [
-          'Gruntfile.js',
-          'grunt-karma.js',
-          'docs/preprocessor.js',
-          'utils/**/*.js',
-          'tasks/**/*.js'
+          "Gruntfile.js",
+          "grunt-karma.js",
+          "docs/preprocessor.js",
+          "utils/**/*.js",
+          "tasks/**/*.js"
         ]
       },
       fix: {
         // src: is calculated below...
         options: {
           rules: {
-            'no-undef': 0,
-            'no-unused-vars': 0
+            "no-undef": 0,
+            "no-unused-vars": 0
           },
           fix: true
         }
@@ -163,22 +163,22 @@ module.exports = function(grunt) {
             ecmaVersion: 5
           }
         },
-        src: ['src/**/*.js', 'lib/addons/p5.dom.js']
+        src: ["src/**/*.js", "lib/addons/p5.dom.js"]
       },
       test: {
-        src: ['bench/**/*.js', 'test/**/*.js', '!test/js/*.js']
+        src: ["bench/**/*.js", "test/**/*.js", "!test/js/*.js"]
       }
     },
 
-    'eslint-samples': {
+    "eslint-samples": {
       options: {
         parserOptions: {
           ecmaVersion: 6
         },
-        format: 'unix'
+        format: "unix"
       },
       source: {
-        src: ['src/**/*.js', 'lib/addons/p5.dom.js']
+        src: ["src/**/*.js", "lib/addons/p5.dom.js"]
       },
       fix: {
         options: {
@@ -193,24 +193,24 @@ module.exports = function(grunt) {
     // documentation.
     watch: {
       quick: {
-        files: ['src/**/*.js', 'src/**/*.frag', 'src/**/*.vert'],
-        tasks: ['browserify'],
+        files: ["src/**/*.js", "src/**/*.frag", "src/**/*.vert"],
+        tasks: ["browserify"],
         options: {
           livereload: true
         }
       },
       // Watch the codebase for changes
       main: {
-        files: ['src/**/*.js'],
-        tasks: ['newer:eslint:source', 'test'],
+        files: ["src/**/*.js"],
+        tasks: ["newer:eslint:source", "test"],
         options: {
           livereload: true
         }
       },
       // watch the theme for changes
       reference_build: {
-        files: ['docs/yuidoc-p5-theme/**/*'],
-        tasks: ['yuidoc'],
+        files: ["docs/yuidoc-p5-theme/**/*"],
+        tasks: ["yuidoc"],
         options: {
           livereload: true,
           interrupt: true
@@ -220,18 +220,18 @@ module.exports = function(grunt) {
       // launch with 'grunt requirejs connect watch:yui'
       yui: {
         files: [
-          'src/**/*.js',
-          'lib/addons/*.js',
-          'src/**/*.frag',
-          'src/**/*.vert'
+          "src/**/*.js",
+          "lib/addons/*.js",
+          "src/**/*.frag",
+          "src/**/*.vert"
         ],
         tasks: [
-          'browserify',
-          'browserify:min',
-          'yuidoc:prod',
-          'clean:reference',
-          'minjson',
-          'uglify'
+          "browserify",
+          "browserify:min",
+          "yuidoc:prod",
+          "clean:reference",
+          "minjson",
+          "uglify"
         ],
         options: {
           livereload: true
@@ -242,7 +242,7 @@ module.exports = function(grunt) {
     // Set up node-side (non-browser) mocha tests.
     mochaTest: {
       test: {
-        src: ['test/node/**/*.js'],
+        src: ["test/node/**/*.js"],
         options: {
           reporter: reporter
         }
@@ -253,6 +253,14 @@ module.exports = function(grunt) {
     mocha: mochaConfig,
 
     mochaChrome: mochaConfig,
+
+    nyc: {
+      report: {
+        options: {
+          reporter: ["text-summary", "html"]
+        }
+      }
+    },
 
     // This minifies the javascript into a single file and adds a banner to the
     // front of the file.
@@ -268,8 +276,8 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'lib/p5.min.js': 'lib/p5.pre-min.js',
-          'lib/addons/p5.dom.min.js': 'lib/addons/p5.dom.js'
+          "lib/p5.min.js": "lib/p5.pre-min.js",
+          "lib/addons/p5.dom.min.js": "lib/addons/p5.dom.js"
         }
       }
     },
@@ -281,11 +289,11 @@ module.exports = function(grunt) {
     clean: {
       reference: {
         src: [
-          'docs/reference/classes/',
-          'docs/reference/elements/',
-          'docs/reference/files/',
-          'docs/reference/modules/',
-          'docs/reference/api.js'
+          "docs/reference/classes/",
+          "docs/reference/elements/",
+          "docs/reference/files/",
+          "docs/reference/modules/",
+          "docs/reference/api.js"
         ]
       }
     },
@@ -301,7 +309,7 @@ module.exports = function(grunt) {
       server: {
         options: {
           directory: {
-            path: './',
+            path: "./",
             options: {
               icons: true
             }
@@ -310,13 +318,13 @@ module.exports = function(grunt) {
           keepalive: keepalive,
           middleware: function(connect, options, middlewares) {
             middlewares.unshift(
-              require('connect-modrewrite')([
-                '^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]',
-                '^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]'
+              require("connect-modrewrite")([
+                "^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]",
+                "^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]"
               ]),
               function(req, res, next) {
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Methods', '*');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "*");
                 return next();
               }
             );
@@ -327,23 +335,23 @@ module.exports = function(grunt) {
       yui: {
         options: {
           directory: {
-            path: './',
+            path: "./",
             options: {
               icons: true
             }
           },
           port: 9001,
-          open: 'http://127.0.0.1:9001/docs/reference/',
+          open: "http://127.0.0.1:9001/docs/reference/",
           keepalive: keepalive,
           middleware: function(connect, options, middlewares) {
             middlewares.unshift(
-              require('connect-modrewrite')([
-                '^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]',
-                '^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]'
+              require("connect-modrewrite")([
+                "^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]",
+                "^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]"
               ]),
               function(req, res, next) {
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Methods', '*');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "*");
                 return next();
               }
             );
@@ -354,23 +362,23 @@ module.exports = function(grunt) {
       test: {
         options: {
           directory: {
-            path: './',
+            path: "./",
             options: {
               icons: true
             }
           },
           port: 9001,
-          open: 'http://127.0.0.1:9001/test/',
+          open: "http://127.0.0.1:9001/test/",
           keepalive: keepalive,
           middleware: function(connect, options, middlewares) {
             middlewares.unshift(
-              require('connect-modrewrite')([
-                '^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]',
-                '^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]'
+              require("connect-modrewrite")([
+                "^/assets/js/p5(\\.min)?\\.js(.*) /lib/p5$1.js$2 [L]",
+                "^/assets/js/p5\\.(dom|sound)(\\.min)?\\.js(.*) /lib/addons/p5.$1$2.js$3 [L]"
               ]),
               function(req, res, next) {
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Methods', '*');
+                res.setHeader("Access-Control-Allow-Origin", "*");
+                res.setHeader("Access-Control-Allow-Methods", "*");
                 return next();
               }
             );
@@ -379,27 +387,27 @@ module.exports = function(grunt) {
         }
       }
     },
-    'saucelabs-mocha': {
+    "saucelabs-mocha": {
       all: {
         options: {
-          urls: ['http://127.0.0.1:9001/test/test.html'],
+          urls: ["http://127.0.0.1:9001/test/test.html"],
           tunnelTimeout: 5,
           build: process.env.TRAVIS_JOB_ID,
           concurrency: 3,
           browsers: [
-            { browserName: 'chrome' },
-            { browserName: 'firefox', platform: 'Linux', version: '42.0' },
-            { browserName: 'safari' }
+            { browserName: "chrome" },
+            { browserName: "firefox", platform: "Linux", version: "42.0" },
+            { browserName: "safari" }
           ],
-          testname: 'p5.js mocha tests',
-          tags: ['master']
+          testname: "p5.js mocha tests",
+          tags: ["master"]
         }
       }
     },
     minjson: {
       compile: {
         files: {
-          './docs/reference/data.min.json': './docs/reference/data.json'
+          "./docs/reference/data.min.json": "./docs/reference/data.json"
         }
       }
     }
@@ -429,64 +437,77 @@ module.exports = function(grunt) {
   // `grunt combineModules:module_1:module_2` where core
   // is included by default in all combinations always.
   // NOTE: "module_x" is the name of it's folder in /src.
-  grunt.loadTasks('tasks/build');
+  grunt.loadTasks("tasks/build");
 
   // Load release task
-  grunt.loadTasks('tasks/release');
+  grunt.loadTasks("tasks/release");
 
   // Load tasks for testing
-  grunt.loadTasks('tasks/test');
+  grunt.loadTasks("tasks/test");
 
   // Load the external libraries used.
-  grunt.loadNpmTasks('grunt-contrib-compress');
-  grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-yuidoc');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-minjson');
-  grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-newer');
-  grunt.loadNpmTasks('grunt-release-it');
-  grunt.loadNpmTasks('grunt-saucelabs');
-  grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks("grunt-contrib-compress");
+  grunt.loadNpmTasks("grunt-contrib-connect");
+  grunt.loadNpmTasks("grunt-contrib-copy");
+  grunt.loadNpmTasks("grunt-eslint");
+  grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-contrib-yuidoc");
+  grunt.loadNpmTasks("grunt-contrib-uglify");
+  grunt.loadNpmTasks("grunt-minjson");
+  grunt.loadNpmTasks("grunt-mocha-test");
+  grunt.loadNpmTasks("grunt-newer");
+  grunt.loadNpmTasks("grunt-release-it");
+  grunt.loadNpmTasks("grunt-saucelabs");
+  grunt.loadNpmTasks("grunt-karma");
+  grunt.loadNpmTasks("grunt-contrib-clean");
+  grunt.loadNpmTasks("grunt-simple-nyc");
 
   // Create the multitasks.
-  grunt.registerTask('build', ['browserify', 'browserify:min', 'uglify']);
-  grunt.registerTask('lint-no-fix', [
-    'yui', // required for eslint-samples
-    'eslint:build',
-    'eslint:source',
-    'eslint:test',
-    'eslint-samples:source'
+  grunt.registerTask("build", [
+    "browserify",
+    "browserify:min",
+    "uglify",
+    "browserify:test"
   ]);
-  grunt.registerTask('lint-fix', ['eslint:fix']);
-  grunt.registerTask('test', [
-    'lint-no-fix',
+  grunt.registerTask("lint-no-fix", [
+    "yui", // required for eslint-samples
+    "eslint:build",
+    "eslint:source",
+    "eslint:test",
+    "eslint-samples:source"
+  ]);
+  grunt.registerTask("lint-fix", ["eslint:fix"]);
+  grunt.registerTask("test", [
+    "lint-no-fix",
     //'yuidoc:prod', // already done by lint-no-fix
-    'build',
-    'connect:server',
-    'mochaChrome',
-    'mochaTest'
+    "build",
+    "connect:server",
+    "mochaChrome",
+    "mochaTest",
+    "nyc:report"
   ]);
-  grunt.registerTask('test:nobuild', ['eslint:test', 'connect', 'mochaChrome']);
-  grunt.registerTask('yui', ['yuidoc:prod', 'clean:reference', 'minjson']);
-  grunt.registerTask('yui:test', [
-    'yuidoc:prod',
-    'clean:reference',
-    'connect:yui',
-    'mochaChrome:yui'
+  grunt.registerTask("test:nobuild", [
+    "eslint:test",
+    "connect:server",
+    "mochaChrome",
+    "mochaTest",
+    "nyc:report"
   ]);
-  grunt.registerTask('yui:dev', [
-    'yui:prod',
-    'clean:reference',
-    'build',
-    'connect:yui',
-    'watch:yui'
+  grunt.registerTask("yui", ["yuidoc:prod", "clean:reference", "minjson"]);
+  grunt.registerTask("yui:test", [
+    "yuidoc:prod",
+    "clean:reference",
+    "connect:yui",
+    "mochaChrome:yui"
   ]);
-  grunt.registerTask('yui:build', ['yui']);
-  grunt.registerTask('default', ['test']);
-  grunt.registerTask('saucetest', ['connect:server', 'saucelabs-mocha']);
+  grunt.registerTask("yui:dev", [
+    "yui:prod",
+    "clean:reference",
+    "build",
+    "connect:yui",
+    "watch:yui"
+  ]);
+  grunt.registerTask("yui:build", ["yui"]);
+  grunt.registerTask("default", ["test"]);
+  grunt.registerTask("saucetest", ["connect:server", "saucelabs-mocha"]);
 };
