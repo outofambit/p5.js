@@ -39,6 +39,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
+    "@babel/standalone": "^7.4.2",
     "all-contributors-cli": "^5.11.0",
     "babel-plugin-istanbul": "^5.1.4",
     "babelify": "^10.0.0",
@@ -64,7 +65,6 @@
     "grunt-contrib-uglify": "^4.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-contrib-yuidoc": "1.0.0",
-    "grunt-env": "^0.4.4",
     "grunt-eslint": "^20.2.0",
     "grunt-karma": "^3.0.1",
     "grunt-minjson": "^0.4.0",
@@ -118,14 +118,11 @@
     "test": "test"
   },
   "babel": {
-    "presets": ["@babel/preset-env"],
+    "presets": [
+      "@babel/preset-env"
+    ],
     "generatorOpts": {
       "retainLines": true
-    },
-    "env": {
-      "test": {
-        "plugins": [["istanbul", { "include": ["src/**/*.js"] }]]
-      }
     }
   },
   "browserslist": [
