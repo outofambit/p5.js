@@ -158,15 +158,15 @@ module.exports = grunt => {
         }
       },
       source: {
-        options: {
-          parserOptions: {
-            ecmaVersion: 5
-          }
-        },
         src: ['src/**/*.js', 'lib/addons/p5.dom.js']
       },
       test: {
-        src: ['bench/**/*.js', 'test/**/*.js', '!test/js/*.js']
+        src: [
+          'bench/**/*.js',
+          'test/**/*.js',
+          '!test/js/*.js',
+          'test/**/*.html'
+        ]
       }
     },
 

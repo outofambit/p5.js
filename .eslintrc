@@ -10,7 +10,7 @@
   },
   "root": true,
   "extends": ["eslint:recommended", "prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["html", "prettier"],
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
