@@ -37,6 +37,8 @@
   },
   "version": "0.7.3",
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "all-contributors-cli": "^5.11.0",
     "babel-plugin-istanbul": "^5.1.4",
     "babelify": "^10.0.0",

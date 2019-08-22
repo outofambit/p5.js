@@ -1,27 +1,27 @@
-"use strict";
+'use strict';
 
-const path = require("path");
-const browserify = require("browserify");
-const derequire = require("derequire");
+const path = require('path');
+const browserify = require('browserify');
+const derequire = require('derequire');
 
 const bannerTemplate =
   '/*! p5.js v<%= pkg.version %> <%= grunt.template.today("mmmm dd, yyyy") %> */';
 
 module.exports = function(grunt) {
-  const srcFilePath = require.resolve("../../src/app.js");
+  const srcFilePath = require.resolve('../../src/app.js');
 
   grunt.registerTask(
-    "browserify",
-    "Compile the p5.js source with Browserify",
+    'browserify',
+    'Compile the p5.js source with Browserify',
     function(param) {
-      const isMin = param === "min";
-      const isTest = param === "test";
+      const isMin = param === 'min';
+      const isTest = param === 'test';
       const filename = isMin
-        ? "p5.pre-min.js"
-        : isTest ? "p5-test.js" : "p5.js";
+        ? 'p5.pre-min.js'
+        : isTest ? 'p5-test.js' : 'p5.js';
 
       // This file will not exist until it has been built
-      const libFilePath = path.resolve("lib/" + filename);
+      const libFilePath = path.resolve('lib/' + filename);
 
       // Reading and writing files is asynchronous
       const done = this.async();
@@ -31,33 +31,33 @@ module.exports = function(grunt) {
 
       // Invoke Browserify programatically to bundle the code
       let browseified = browserify(srcFilePath, {
-        standalone: "p5"
+        standalone: 'p5'
       });
 
       if (isMin) {
-        browseified = browseified.exclude("../../docs/reference/data.json");
+        browseified = browseified.exclude('../../docs/reference/data.json');
       }
 
       const babelifyOpts = {};
 
       if (isTest) {
-        babelifyOpts.envName = "test";
+        babelifyOpts.envName = 'test';
       }
 
       const bundle = browseified
-        .transform("brfs")
-        .transform("babelify", babelifyOpts)
+        .transform('brfs')
+        .transform('babelify', babelifyOpts)
         .bundle();
 
       // Start the generated output with the banner comment,
-      let code = banner + "\n";
+      let code = banner + '\n';
 
       // Then read the bundle into memory so we can run it through derequire
       bundle
-        .on("data", function(data) {
+        .on('data', function(data) {
           code += data;
         })
-        .on("end", function() {
+        .on('end', function() {
           // "code" is complete: create the distributable UMD build by running
           // the bundle through derequire, then write the bundle to disk.
           // (Derequire changes the bundle's internal "require" function to
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 
           // Print a success message
           grunt.log.writeln(
-            ">>".green + " Bundle " + ("lib/" + filename).cyan + " created."
+            '>>'.green + ' Bundle ' + ('lib/' + filename).cyan + ' created.'
           );
 
           // Complete the task
