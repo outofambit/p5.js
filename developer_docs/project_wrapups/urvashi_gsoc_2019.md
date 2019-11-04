@@ -3,7 +3,7 @@
 ### by Urvashi Verma ([@ihsavru](https://github.com/ihsavru))
 
 ## Overview
-This project focused on improving the unit tests for different modules of p5.js. I spent my summer writing unit tests for different modules. I also worked on integrating the code coverage reports with Codecov through Travis CI. 
+This project focused on improving the unit tests for different modules of p5.js. I spent my summer writing unit tests for different modules. I also worked on integrating the code coverage reports with Codecov through GitHub Actions. 
 
 ## Contributions during GSoC'19
 I divided the timeline into smaller periods of a week or two to handle unit tests for each module. Following is a list of PRs submitted:

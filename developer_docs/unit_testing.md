@@ -66,7 +66,7 @@ The setup for Node.js tests is all done in `test/mocha.opts`
 
 ### Continuous Integration Testing
 
-When you open a pull request in the p5.js repo, it will automatically run the tests [on Travis CI](https://travis-ci.org/processing/p5.js/pull_requests) too. Travis CI helps us double check that the tests pass for each pull request, with no extra work from individual contributors. It also automatically uploads the coverage reports to [Codecov](https://codecov.io/github/processing/p5.js).
+When you open a pull request in the p5.js repo, it will automatically run the tests too. Travis CI helps us double check that the tests pass for each pull request, with no extra work from individual contributors. It also automatically uploads the coverage reports to [Codecov](https://codecov.io/github/processing/p5.js).
 
 ## Adding Unit Tests
 
